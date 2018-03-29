@@ -39,6 +39,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{_datadir}/xdmod/
 %{_docdir}/%{name}-%{version}__PRERELEASE__/
+%{_sysconfdir}/xdmod/
+%{_bindir}/xdmod-fed-*
 
 %changelog
 * Fri Mar 30 2018 Benjamin D. Plessinger <bpless@buffalo.edu> 8.0.0-1.0
