@@ -1,0 +1,4 @@
+[federated-general]
+
+; The version number is updated during the upgrade process.
+version = "[:federated-general_version:]"
