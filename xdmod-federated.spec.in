@@ -1,0 +1,45 @@
+Name:          xdmod-federated
+Version:       __VERSION__
+Release:       __RELEASE__%{?dist}
+Summary:       Federated module for Open XDMoD
+URL:           http://federated.xdmod.org/
+Vendor:        Center for Computational Research, University at Buffalo
+Packager:      Benjamin D. Plessinger <bpless@buffalo.edu>
+Group:         Applications/Internet
+License:       LGPLv3+
+Source:        %{name}-%{version}__PRERELEASE__.tar.gz
+BuildRoot:     %(mktemp -ud %{_tmppath}/%{name}-%{version}__PRERELEASE__-%{release}-XXXXXX)
+BuildArch:     noarch
+BuildRequires: php-cli
+Requires:      xdmod >= 8.0.0, xdmod < 8.5.0
+
+%description
+This package provides federated support for Open XDMoD. This module provides the
+ability to have multiple disparate Open XDMoD installations replicate raw data
+to a core server to provide an overview of all systems.
+
+%prep
+%setup -q -n %{name}-%{version}__PRERELEASE__
+
+%install
+rm -rf $RPM_BUILD_ROOT
+DESTDIR=$RPM_BUILD_ROOT ./install \
+    --quiet \
+    --bindir=%{_bindir} \
+    --libdir=%{_libdir}/xdmod \
+    --sysconfdir=%{_sysconfdir}/xdmod \
+    --datadir=%{_datadir}/xdmod \
+    --docdir=%{_docdir}/%{name}-%{version}__PRERELEASE__ \
+    --crondconfdir=%{_sysconfdir}/cron.d
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root,-)
+%{_datadir}/xdmod/
+%{_docdir}/%{name}-%{version}__PRERELEASE__/
+
+%changelog
+* Fri Mar 30 2018 Benjamin D. Plessinger <bpless@buffalo.edu> 8.0.0-1.0
+- Initial Beta
