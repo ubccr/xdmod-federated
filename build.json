@@ -1,0 +1,38 @@
+{
+    "name": "xdmod-federated",
+    "version": "8.0.0",
+    "release": "1.0",
+    "files": {
+        "include_paths": [
+        ],
+        "include_patterns": [
+        ],
+        "exclude_paths": [
+            "docs"
+        ],
+        "exclude_patterns": [
+            "#/\\.#"
+        ]
+    },
+    "commands": {
+        "pre_build": [
+        ]
+    },
+    "file_maps": {
+        "data": [
+        ],
+        "bin": [
+        ],
+        "lib": [
+        ],
+        "doc": [
+            {"AUTHORS.md": "AUTHORS"},
+            {"CHANGELOG.md": "CHANGELOG"},
+            "LICENSE",
+            "NOTICE",
+            {"README.md": "README"}
+        ],
+        "etc": {
+        }
+    }
+}
