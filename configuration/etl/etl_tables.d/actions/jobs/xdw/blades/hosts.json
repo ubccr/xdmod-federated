@@ -1,0 +1,42 @@
+{
+    "table_definition": {
+        "$ref": "etl_tables.d/jobs/xdw/hosts.json#/table_definition"
+    },
+    "source_query": {
+        "records": {
+            "host_origin_id": "hf.id",
+            "resource_id": "drf.id",
+            "hostname": "hostname"
+        },
+        "joins": [
+            {
+                "schema": "${SOURCE_SCHEMA}",
+                "name": "hosts",
+                "alias": "hf"
+            },
+            {
+                "schema": "${SOURCE_SCHEMA}",
+                "name": "resourcefact",
+                "alias": "orf",
+                "on": "hf.resource_id = orf.id"
+            },
+            {
+                "schema": "${DESTINATION_SCHEMA}",
+                "name": "organization",
+                "alias": "of",
+                "on": "of.organization_origin_id = orf.organization_id AND federation_blade_id = ${blade_id}"
+            },
+            {
+                "schema": "${DESTINATION_SCHEMA}",
+                "name": "resourcefact",
+                "alias": "drf",
+                "on": "drf.organization_id = of.id and drf.resource_origin_id = hf.resource_id"
+            }
+        ],
+        "macros": [
+            {
+                "$ref": "etl_macros.d/federated/federated.json#/getBladeId"
+            }
+        ]
+    }
+}
