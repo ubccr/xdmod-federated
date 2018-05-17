@@ -30,7 +30,7 @@
             "start_day_id": "jr.start_day_id",
             "end_day_id": "jr.end_day_id",
             "completed": "jr.completed",
-            "federation_blade_id": "${blade_id}"
+            "federation_instance_id": "${instance_id}"
         },
         "joins": [
             {
@@ -42,7 +42,7 @@
                 "schema": "${DESTINATION_SCHEMA}",
                 "name": "organization",
                 "alias": "jrof",
-                "on": "jr.resource_organization_id = jrof.organization_origin_id AND jrof.federation_blade_id = ${blade_id}"
+                "on": "jr.resource_organization_id = jrof.organization_origin_id AND jrof.federation_instance_id = ${instance_id}"
             },
             {
                 "schema": "${DESTINATION_SCHEMA}",
@@ -54,19 +54,19 @@
                 "schema": "${DESTINATION_SCHEMA}",
                 "name": "person",
                 "alias": "pf",
-                "on": "pf.person_origin_id = jr.person_id AND pf.organization_id = (SELECT id FROM ${DESTINATION_SCHEMA}.organization WHERE jr.person_organization_id = organization_origin_id AND federation_blade_id = ${blade_id})"
+                "on": "pf.person_origin_id = jr.person_id AND pf.organization_id = (SELECT id FROM ${DESTINATION_SCHEMA}.organization WHERE jr.person_organization_id = organization_origin_id AND federation_instance_id = ${instance_id})"
             },
             {
                 "schema": "${DESTINATION_SCHEMA}",
                 "name": "person",
                 "alias": "pif",
-                "on": "pif.person_origin_id = jr.principalinvestigator_person_id AND pif.organization_id = (SELECT id FROM ${DESTINATION_SCHEMA}.organization WHERE jr.piperson_organization_id = organization_origin_id AND federation_blade_id = ${blade_id})"
+                "on": "pif.person_origin_id = jr.principalinvestigator_person_id AND pif.organization_id = (SELECT id FROM ${DESTINATION_SCHEMA}.organization WHERE jr.piperson_organization_id = organization_origin_id AND federation_instance_id = ${instance_id})"
             },
             {
                 "schema": "${DESTINATION_SCHEMA}",
                 "name": "account",
                 "alias": "af",
-                "on": "af.account_origin_id = jr.account_id AND af.federation_blade_id = ${blade_id}"
+                "on": "af.account_origin_id = jr.account_id AND af.federation_instance_id = ${instance_id}"
             },
             {
                 "schema": "${DESTINATION_SCHEMA}",
@@ -77,7 +77,7 @@
         ],
         "macros": [
             {
-                "$ref": "etl_macros.d/federated/federated.json#/getBladeId"
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
             }
         ]
     }

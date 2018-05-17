@@ -8,8 +8,8 @@ etlSource="__XDMOD_ETC_PATH__"
 etlDest="__XDMOD_ETC_PATH__"
 
 usage() {
-    echo "Usage: $0 -b <string> [-s <string>] [-f] [-q]" 1>&2;
-    echo "-b Blades blade1.fqdn[,blade2.fqdn]"
+    echo "Usage: $0 -i <string> [-e <string>] [-d] [-q]" 1>&2;
+    echo "-i Instances instance1.fqdn[,instance2.fqdn]"
     echo "-e etl input (default: $etlSource)" 1>&2;
     echo "-d etl output (default: $etlDest)" 1>&2;
     echo "-q quiet" 1>&2;
@@ -25,10 +25,10 @@ log() {
 }
 
 
-while getopts "b:e:d:q" o; do
+while getopts "i:e:d:q" o; do
     case "${o}" in
-        b)
-            blade=${OPTARG}
+        i)
+            instances=${OPTARG}
             ;;
         e)
             etlSource=${OPTARG}
@@ -46,21 +46,22 @@ while getopts "b:e:d:q" o; do
 done
 shift $((OPTIND-1))
 
-if [ -z "${blade}" ] ; then
+if [ -z "${instances}" ] ; then
+    echo "no instances specified"
     usage
 fi
 
 oldIFS=$IFS
 IFS=','
-for thisBlade in $blade ; do
-    thisBlade=$(echo ${thisBlade} | sed 's/[^0-9,a-z,A-Z$_]/-/g')
+for thisInstance in $instances ; do
+    thisInstance=$(echo ${thisInstance} | sed 's/[^0-9,a-z,A-Z$_]/-/g')
     etlTemplate=$(< ${etlSource}/etl/etl_templates.d/etl.d/federated.json)
 
-    etlReplaced=$(printf "${etlTemplate}" | sed -e "s/\${blade}/${thisBlade}/g")
+    etlReplaced=$(printf "${etlTemplate}" | sed -e "s/\${instance}/${thisInstance}/g")
 
-    $(printf "${etlReplaced}" > ${etlDest}/etl/etl.d/fed-${thisBlade}.json)
+    $(printf "${etlReplaced}" > ${etlDest}/etl/etl.d/fed-${thisInstance}.json)
     # this should not be hard codeded and should be able to use any etl_overseer
     # also add the ability to pass debugging flag
-    __XDMOD_SHARE_PATH__/tools/etl/etl_overseer.php -c /etc/xdmod/etl/etl.json -p fed.${thisBlade}.bootstrap
+    __XDMOD_SHARE_PATH__/tools/etl/etl_overseer.php -p fed.${thisBlade}.bootstrap
 done
 IFS=$oldIFS

@@ -1,136 +1,136 @@
 {
     "ingest": [
         {
-            "name": "blade-ogranization-ingest",
-            "definition_file": "actions/jobs/xdw/blades/organization.json",
+            "name": "instance-ogranization-ingest",
+            "definition_file": "actions/jobs/xdw/instances/organization.json",
             "description": "Organization Ingest",
             "truncate_destination": false
         },
         {
-            "name": "blade-resource-ingest",
-            "definition_file": "actions/jobs/xdw/blades/resource-fact.json",
+            "name": "instance-resource-ingest",
+            "definition_file": "actions/jobs/xdw/instances/resource-fact.json",
             "description": "Resource Ingest",
             "truncate_destination": false
         },
         {
-            "name": "blade-queue-ingest",
-            "definition_file": "actions/jobs/xdw/blades/queue.json",
+            "name": "instance-queue-ingest",
+            "definition_file": "actions/jobs/xdw/instances/queue.json",
             "description": "Queue ingestor",
             "truncate_destination": false
         },
         {
-            "name": "blade-resource-spec-ingest",
-            "definition_file": "actions/jobs/xdw/blades/resource-specs.json",
+            "name": "instance-resource-spec-ingest",
+            "definition_file": "actions/jobs/xdw/instances/resource-specs.json",
             "description": "Resource Spec Ingest",
             "truncate_destination": false
         },
         {
-            "name": "blade-resource-allocated-ingest",
-            "definition_file": "actions/jobs/xdw/blades/resource-allocated.json",
+            "name": "instance-resource-allocated-ingest",
+            "definition_file": "actions/jobs/xdw/instances/resource-allocated.json",
             "description": "Resource Allocation Ingest",
             "truncate_destination": false
         },
         {
-            "name": "blade-hosts-ingest",
-            "definition_file": "actions/jobs/xdw/blades/hosts.json",
+            "name": "instance-hosts-ingest",
+            "definition_file": "actions/jobs/xdw/instances/hosts.json",
             "description": "Hosts Ingest",
             "truncate_destination": false
         },
         {
-            "name": "blade-person-ingest",
-            "definition_file": "actions/jobs/xdw/blades/person.json",
+            "name": "instance-person-ingest",
+            "definition_file": "actions/jobs/xdw/instances/person.json",
             "description": "Person ingestor",
             "truncate_destination": false
         },
         {
-            "name": "blade-gateway-person-ingest",
-            "definition_file": "actions/jobs/xdw/blades/gateway-person.json",
+            "name": "instance-gateway-person-ingest",
+            "definition_file": "actions/jobs/xdw/instances/gateway-person.json",
             "description": "Gateway Person ingestor",
             "enabled": false,
             "truncate_destination": false
         },
         {
-            "name": "blade-piperson-ingest",
-            "definition_file": "actions/jobs/xdw/blades/piperson.json",
+            "name": "instance-piperson-ingest",
+            "definition_file": "actions/jobs/xdw/instances/piperson.json",
             "description": "PI Person ingestor",
             "truncate_destination": false
         },
         {
-            "name": "blade-account-ingest",
-            "definition_file": "actions/jobs/xdw/blades/account.json",
+            "name": "instance-account-ingest",
+            "definition_file": "actions/jobs/xdw/instances/account.json",
             "description": "Account ingestor",
             "truncate_destination": false
         },
         {
-            "name": "blade-request-ingest",
-            "definition_file": "actions/jobs/xdw/blades/request.json",
+            "name": "instance-request-ingest",
+            "definition_file": "actions/jobs/xdw/instances/request.json",
             "description": "Request ingestor",
             "truncate_destination": false
         },
         {
-            "name": "blade-allocation-ingest",
-            "definition_file": "actions/jobs/xdw/blades/allocation.json",
+            "name": "instance-allocation-ingest",
+            "definition_file": "actions/jobs/xdw/instances/allocation.json",
             "description": "Allocation ingestor",
             "truncate_destination": false
         },
         {
-            "name": "blade-allocation-on-resource-ingest",
-            "definition_file": "actions/jobs/xdw/blades/allocation-on-resource.json",
+            "name": "instance-allocation-on-resource-ingest",
+            "definition_file": "actions/jobs/xdw/instances/allocation-on-resource.json",
             "description": "Allocation on Resource ingestor",
             "truncate_destination": false
         },
         {
-            "name": "blade-allocation-adjustment-ingest",
-            "definition_file": "actions/jobs/xdw/blades/allocation-adjustment.json",
+            "name": "instance-allocation-adjustment-ingest",
+            "definition_file": "actions/jobs/xdw/instances/allocation-adjustment.json",
             "description": "Allocation Adjustment ingestor",
             "enabled": false,
             "truncate_destination": false
         },
         {
-            "name": "blade-allocation-breakdown-ingest",
-            "definition_file": "actions/jobs/xdw/blades/allocation-breakdown.json",
+            "name": "instance-allocation-breakdown-ingest",
+            "definition_file": "actions/jobs/xdw/instances/allocation-breakdown.json",
             "description": "Allocation Breakdown ingestor",
             "truncate_destination": false
         },
         {
-            "name": "blade-system-account-ingest",
-            "definition_file": "actions/jobs/xdw/blades/system-account.json",
+            "name": "instance-system-account-ingest",
+            "definition_file": "actions/jobs/xdw/instances/system-account.json",
             "description": "System Account ingestor",
             "truncate_destination": false
         },
         {
-            "name": "blade-job-record-ingest",
-            "definition_file": "actions/jobs/xdw/blades/job-records.json",
+            "name": "instance-job-record-ingest",
+            "definition_file": "actions/jobs/xdw/instances/job-records.json",
             "description": "Job records ingestor",
             "truncate_destination": false
         },
         {
-            "name": "blade-job-task-ingest",
-            "definition_file": "actions/jobs/xdw/blades/job-tasks.json",
+            "name": "instance-job-task-ingest",
+            "definition_file": "actions/jobs/xdw/instances/job-tasks.json",
             "description": "Job tasks ingestor",
             "truncate_destination": false
         },
         {
-            "name": "blade-jobhosts-ingest",
-            "definition_file": "actions/jobs/xdw/blades/jobhosts.json",
+            "name": "instance-jobhosts-ingest",
+            "definition_file": "actions/jobs/xdw/instances/jobhosts.json",
             "description": "Job Hosts ingestor",
             "truncate_destination": false
         },
         {
-            "name": "blade-pi-ingest",
-            "definition_file": "actions/jobs/xdw/blades/principal-investigator.json",
+            "name": "instance-pi-ingest",
+            "definition_file": "actions/jobs/xdw/instances/principal-investigator.json",
             "description": "pi ingestor",
             "truncate_destination": false
         },
         {
-            "name": "blade-ppl-on-account-ingest",
-            "definition_file": "actions/jobs/xdw/blades/people-on-account.json",
+            "name": "instance-ppl-on-account-ingest",
+            "definition_file": "actions/jobs/xdw/instances/people-on-account.json",
             "description": "People On Account ingestor",
             "enabled": false,
             "truncate_destination": false
         },
         {
-            "name": "blade-min-max-date",
+            "name": "instance-min-max-date",
             "definition_file": "actions/jobs/xdw/min-max-date.json",
             "description": "Job Record min and max job dates",
             "truncate_destination": true

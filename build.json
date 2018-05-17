@@ -2,7 +2,7 @@
     "name": "xdmod-federated",
     "version": "8.0.0",
     "release": "0.1",
-    "prerelease": "beta0.20140330",
+    "prerelease": "beta0.20180517",
     "files": {
         "include_paths": [
         ],
