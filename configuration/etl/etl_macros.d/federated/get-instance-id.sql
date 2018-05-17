@@ -1,8 +1,8 @@
 (
     SELECT
-        federation_blade_id
+        federation_instance_id
     FROM
-        ${dest}.federation_blades
+        ${dest}.federation_instances
     WHERE
         prefix = TRIM('-modw' FROM '${src}')
 )

@@ -32,12 +32,12 @@
                 "schema": "${DESTINATION_SCHEMA}",
                 "name": "organization",
                 "alias": "dof",
-                "on": "dof.organization_origin_id = oof.id AND dof.federation_blade_id = ${blade_id}"
+                "on": "dof.organization_origin_id = oof.id AND dof.federation_instance_id = ${instance_id}"
             }
         ],
         "macros": [
             {
-                "$ref": "etl_macros.d/federated/federated.json#/getBladeId"
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
             }
         ]
     }

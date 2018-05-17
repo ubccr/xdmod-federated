@@ -11,12 +11,12 @@ Source:        %{name}-%{version}__PRERELEASE__.tar.gz
 BuildRoot:     %(mktemp -ud %{_tmppath}/%{name}-%{version}__PRERELEASE__-%{release}-XXXXXX)
 BuildArch:     noarch
 BuildRequires: php-cli
-Requires:      xdmod >= 8.0.0, xdmod < 8.5.0
+Requires:      xdmod >= 8.0.0, xdmod < 8.5.0, ruby, java-1.8.0-openjdk
 
 %description
 This package provides federated support for Open XDMoD. This module provides the
 ability to have multiple disparate Open XDMoD installations replicate raw data
-to a core server to provide an overview of all systems.
+to a Hub server to provide an overview of all systems.
 
 %prep
 %setup -q -n %{name}-%{version}__PRERELEASE__

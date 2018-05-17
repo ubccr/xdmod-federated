@@ -5,7 +5,7 @@
     "source_query": {
         "records": {
             "organization_origin_id": "id",
-            "federation_blade_id": "${blade_id}",
+            "federation_instance_id": "${instance_id}",
             "organizationtype_id": "organizationtype_id",
             "abbrev": "abbrev",
             "name": "name",
@@ -30,7 +30,7 @@
         ],
         "macros": [
             {
-                "$ref": "etl_macros.d/federated/federated.json#/getBladeId"
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
             }
         ]
     }
