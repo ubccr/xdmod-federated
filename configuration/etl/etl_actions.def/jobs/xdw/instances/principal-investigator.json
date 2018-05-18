@@ -29,13 +29,13 @@
                 "schema": "${DESTINATION_SCHEMA}",
                 "name": "person",
                 "alias": "dpf",
-                "on": "dpf.person_origin_id = opf.id AND dpf.organization_id = (SELECT id FROM ${DESTINATION_SCHEMA}.organization WHERE opf.organization_id = organization_origin_id AND federation_blade_id = ${blade_id})"
+                "on": "dpf.person_origin_id = opf.id AND dpf.organization_id = (SELECT id FROM ${DESTINATION_SCHEMA}.organization WHERE opf.organization_id = organization_origin_id AND federation_instance_id = ${instance_id})"
             },
             {
                 "schema": "${DESTINATION_SCHEMA}",
                 "name": "account",
                 "alias": "daf",
-                "on": "daf.federation_blade_id = ${blade_id} AND daf.account_origin_id = orf.account_id"
+                "on": "daf.federation_instance_id = ${instance_id} AND daf.account_origin_id = orf.account_id"
             },
             {
                 "schema": "${DESTINATION_SCHEMA}",
@@ -46,7 +46,7 @@
         ],
         "macros": [
             {
-                "$ref": "etl_macros.d/federated/federated.json#/getBladeId"
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
             }
         ]
     }

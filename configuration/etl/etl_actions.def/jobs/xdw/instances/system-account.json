@@ -33,7 +33,7 @@
                 "schema": "${DESTINATION_SCHEMA}",
                 "name": "organization",
                 "alias": "rof",
-                "on": "rof.organization_origin_id = orf.organization_id AND rof.federation_blade_id = ${blade_id}"
+                "on": "rof.organization_origin_id = orf.organization_id AND rof.federation_instance_id = ${instance_id}"
             },
             {
                 "schema": "${DESTINATION_SCHEMA}",
@@ -45,7 +45,7 @@
                 "schema": "${DESTINATION_SCHEMA}",
                 "name": "organization",
                 "alias": "pof",
-                "on": "pof.organization_origin_id = opf.organization_id AND pof.federation_blade_id = ${blade_id}"
+                "on": "pof.organization_origin_id = opf.organization_id AND pof.federation_instance_id = ${instance_id}"
             },
             {
                 "schema": "${DESTINATION_SCHEMA}",
@@ -56,7 +56,7 @@
         ],
         "macros": [
             {
-                "$ref": "etl_macros.d/federated/federated.json#/getBladeId"
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
             }
         ]
     }

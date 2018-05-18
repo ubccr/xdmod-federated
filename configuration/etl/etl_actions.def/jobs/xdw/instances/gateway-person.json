@@ -25,12 +25,12 @@
                 "schema": "${DESTINATION_SCHEMA}",
                 "name": "person",
                 "alias": "dpf",
-                "on": "dpf.person_origin_id = ogpf.person_id AND dpf.organization_id = (SELECT id FROM ${DESTINATION_SCHEMA}.organization WHERE opf.organization_id = organization_origin_id AND federation_blade_id = ${blade_id})"
+                "on": "dpf.person_origin_id = ogpf.person_id AND dpf.organization_id = (SELECT id FROM ${DESTINATION_SCHEMA}.organization WHERE opf.organization_id = organization_origin_id AND federation_instance_id = ${instance_id})"
             }
         ],
         "macros": [
             {
-                "$ref": "etl_macros.d/federated/federated.json#/getBladeId"
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
             }
         ]
     }
