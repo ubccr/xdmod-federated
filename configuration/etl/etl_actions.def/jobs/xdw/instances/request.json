@@ -29,12 +29,12 @@
                 "schema": "${DESTINATION_SCHEMA}",
                 "name": "account",
                 "alias": "af",
-                "on": "af.federation_blade_id = ${blade_id} AND af.account_origin_id = rf.account_id"
+                "on": "af.federation_instance_id = ${instance_id} AND af.account_origin_id = rf.account_id"
             }
         ],
         "macros": [
             {
-                "$ref": "etl_macros.d/federated/federated.json#/getBladeId"
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
             }
         ]
     }
