@@ -1,0 +1,74 @@
+#!/bin/bash
+if ! [ $(id -u) = 0 ]; then
+    echo "$0 must be run as root"
+    exit 1
+fi
+PASSWORD=`date +%s | sha256sum | base64 | head -c 32`
+
+quiet=false
+skipSSH=false
+skipMySQL=false
+
+usage() {
+    echo "Usage: $0 [-k] [-m] [-q]" 1>&2;
+    echo "-k Skip SSH key generation default: $skipSSH" 1>&2;
+    echo "-m Skip MySQL user Creation default: $skipMySQL" 1>&2;
+    echo "-q quiet" 1>&2;
+    exit 1;
+}
+
+log() {
+    if [ $quiet != "true" ] ; then
+        echo -e $1
+    fi
+}
+
+
+while getopts "kmq" o; do
+    case "${o}" in
+        k)
+            skipSSH=true
+            ;;
+        m)
+            skipMySQL=true
+            ;;
+        q)
+            quiet=true
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+log "Tungsten"
+log "\tCreate USER"
+usermod -G mysql tungsten
+if [ $skipSSH != "true" ] ; then
+    log "\tGenerate SSH Key"
+    su - tungsten -c 'ssh-keygen -f $HOME/.ssh/id_rsa -N ""'
+    cat /home/tungsten/.ssh/id_rsa.pub >> /home/tungsten/.ssh/authorized_keys
+    chmod 700 /home/tungsten/.ssh
+    chmod 600 /home/tungsten/.ssh/*
+    mkdir -p /opt/continuent/{software/conf,software/replicator.conf}
+    find /opt/continuent/ -type d -exec chmod 755 {} \;
+    find /opt/continuent/ -type d -exec chown tungsten:tungsten {} \;
+fi
+
+if [ $skipMySQL != "true" ] ; then
+    # https://stackoverflow.com/questions/13357760/mysql-create-user-if-not-exists/16592722#16592722
+    # https://stackoverflow.com/questions/10299148/mysql-error-1045-28000-access-denied-for-user-billlocalhost-using-passw
+    log "\tMySQL user"
+    echo "SET GLOBAL log_bin_trust_function_creators = 1;
+    DELETE FROM mysql.user WHERE User='';
+    GRANT ALL ON *.* TO tungsten@'%' IDENTIFIED BY 'MzRlMDhjNjA2ZjJhZTBhMmNlYmM2MmU4' WITH GRANT OPTION ;
+    FLUSH PRIVILEGES;   " | mysql
+    cat > /home/tungsten/.my.cnf << EOL
+[client]
+user = tungsten
+pass = MzRlMDhjNjA2ZjJhZTBhMmNlYmM2MmU4
+EOL
+    chmod 600 /home/tungsten/.my.cnf
+    chown tungsten:tungsten /home/tungsten/.my.cnf
+fi

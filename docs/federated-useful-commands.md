@@ -9,7 +9,7 @@ sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl 
 i.e.
 
 ```bash
-sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl -service amun_ccr_xdmod_org status"
+sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl -service {instance.fqdn . and - replaced with underscore} status"
 ```
 
 ### Status of filters
@@ -21,25 +21,25 @@ sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl 
 ### [Recovering from errors][trterrors]
 
 ```bash
-sudo su - tungsten -c "trepctl -service {instance.fqdn . replaced with underscore} status"
+sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl -service {instance.fqdn . and - replaced with underscore} status"
 # find
 # pendingError           : NONE
 # pendingErrorCode       : NONE
 # pendingErrorEventId    : NONE
 # pendingErrorSeqno      : -1
-sudo su - tungsten -c "trepctl -service {instance.fqdn . replaced with underscore} online -skip-seqno <NUM>"
+sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl -service {instance.fqdn . and - replaced with underscore} online -skip-seqno <NUM>"
 ```
 
 i.e.
 
 ```bash
-sudo su - tungsten -c "trepctl -service {instance.fqdn . replaced with underscore} status"
+sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl -service {instance.fqdn . and - replaced with underscore} status"
 # find
 # pendingError           : NONE
 # pendingErrorCode       : NONE
 # pendingErrorEventId    : NONE
 # pendingErrorSeqno      : -1
-sudo su - tungsten -c "trepctl -service {instance.fqdn . replaced with underscore} online -skip-seqno <NUM>"
+sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl -service {instance.fqdn . and - replaced with underscore} online -skip-seqno <NUM>"
 ```
 
 ### Change Configuration of a instance
@@ -47,7 +47,7 @@ sudo su - tungsten -c "trepctl -service {instance.fqdn . replaced with underscor
 If you want to replicate more or less data
 
 ```bash
-/opt/continuent/tungsten/tools/tpm update --repl-svc-extractor-filters=replicate --property=replicator.filter.replicate.ignore='mod_logger,mod_hpcdb,modw_aggregates,modw_filters'
+/opt/continuent/tungsten/tools/tpm update --repl-svc-extractor-filters=replicate --property=replicator.filter.replicate.ignore='mod_logger,mod_shredder,mod_hpcdb,modw_aggregates,modw_filters,modw.tmp*'
 ```
 
 ### Logs
