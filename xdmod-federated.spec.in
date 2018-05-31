@@ -21,6 +21,15 @@ to a Hub server to provide an overview of all systems.
 %prep
 %setup -q -n %{name}-%{version}__PRERELEASE__
 
+%pre
+getent group tungsten  >/dev/null || groupadd -r tungsten
+getent passwd tungsten >/dev/null || \
+    useradd -r -M -c "Open XDMoD Tungsten" -g tungsten tungsten
+mkdir -p /opt/continuent/{software/conf,software/replicator.conf}
+chown -R tungsten:tungsten /opt/continuent
+find /opt/continuent/ -type d -exec chmod 755 {} \;
+exit 0
+
 %install
 rm -rf $RPM_BUILD_ROOT
 DESTDIR=$RPM_BUILD_ROOT ./install \
@@ -31,6 +40,9 @@ DESTDIR=$RPM_BUILD_ROOT ./install \
     --datadir=%{_datadir}/xdmod \
     --docdir=%{_docdir}/%{name}-%{version}__PRERELEASE__ \
     --crondconfdir=%{_sysconfdir}/cron.d
+
+%post
+mv %{_sysconfdir}/xdmod/security-limits-d-10-xdmod.conf %{_sysconfdir}/security/limits.d/10-xdmod.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT

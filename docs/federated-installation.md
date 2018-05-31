@@ -12,67 +12,59 @@ Follow directions for the tungsten prerequisites [prerequisites][trprereqs] The 
 
     -   SET GLOBAL log_bin_trust_function_creators = 1;
 
--   server-id = 1
+-   server-id = #
 
-    -   each server must be different
+    -   each server must be different suggest using:
+    -   printf %d\\n 0x`hostname -f | md5sum | awk '{ print $1 }' | cut -b 1-8`
 ```
 
 ### Initialize Hub Database
 
 The Hub database needs to have all of the same tables and structure of the instances.
 
-Use the xdmod-setup script initialize the Hub Database
+Use the xdmod-setup script initialize the Hub Database (setup your database and organization)
 
-#### Create SQL for Instance Initialization
+### Prepare for replication using tungsten
+
+#### Hub Server
+
+##### Prerequisites
+[Additional Information][trprereqs2]
+
+
+##### Create tungsten user(s) and generate RSA key and password
+**a random 32 character password will be generated for mysql and stored in ~tungsten/.my.cnf**
+
+```bash
+xdmod-fed-tungsten-add-user
+```
+
+
+#### Create ETL for Instance Initialization
 
 Create instance databases on Hub
 
 **(replacing instance\d.fqdn with the fqdn of the instance(s))**
 
 ```bash
-assets/scripts/xdmod-fed-create-instance-sql.sh -b instance1.fqdn[,instance2.fqdn,...]
-```
-
-### Prepare for replication using tungsten
-
-#### Hub Server
-
-##### Create tungsten user(s) and generate RSA key
-
-**You really should change the password in the file before running** **TODO: options for password retrieval (SESSION or argument)**
-
-```bash
-assets/scripts/tungsten-add-user.sh
-```
-
-##### Tungsten Prerequisites (for the Hub)
-
-**TODO: when building as RPM put java and ruby into deps**
-
-```bash
-assets/scripts/tungsten-prereqs.sh
+xdmod-fed-instance-etl -i instance1.fqdn[,instance2.fqdn,...]
 ```
 
 ##### Download and extract tungsten
 
 ```bash
-assets/scripts/tungsten-download.sh -v 5.0.1 -r 138
+xdmod-fed-tungsten-download
 ```
 
 #### Instances
 
 ##### Tungsten Prerequisites (for the instances)
 
-```bash
-assets/scripts/tungsten-prereqs.sh
-```
-
-##### Setup Tungsten user (skipping key generation)
-
-**You really should change the password in the file before running** **TODO: options for password retrieval (SESSION or argument)**
+##### Create tungsten user(s) and generate RSA key
+**a random 32 character password will be generated for mysql and stored in ~tungsten/.my.cnf**
 
 ```bash
-assets/scripts/tungsten-add-user.sh -k
+xdmod-fed-tungsten-add-user
 ```
 
 **TODO: Automate this?**
@@ -85,10 +77,9 @@ Copy the public (~tungsten/.ssh/id_rsa.pub), private key (~tungsten/.ssh/id_rsa)
 
 ### Set Tungsten defaults
 
-**The replication-password should be changed to what it was changed to in previous steps (You did change it didn't you?)** **TODO: options for password retrieval (SESSION or argument)**
 
 ```bash
-assets/scripts/tungsten-set-defaults.sh
+xdmod-fed-tungsten-defaults
 ```
 
 ### Configuring the xdmodfederation service
@@ -96,7 +87,7 @@ assets/scripts/tungsten-set-defaults.sh
 **(replacing instance\d.fqdn with the fqdn of the instance(s))**
 
 ```bash
-assets/scripts/tungsten-config-federation.sh -c hub.fqdn -b instance1.fqdn[,instance2.fqdn,...]
+xdmod-fed-tungsten-configure -h hub.fqdn -i instance1.fqdn[,instance2.fqdn,...]
 ```
 
 ### Configuring database rename
@@ -104,20 +95,26 @@ assets/scripts/tungsten-config-federation.sh -c hub.fqdn -b instance1.fqdn[,inst
 **(replacing instance\d.fqdn with the fqdn of the instance(s))**
 
 ```bash
-assets/scripts/tungsten-config-instances.sh -b instance1.fqdn[,instance2.fqdn,...]
+xdmod-fed-tungsten-config-instance -i instance1.fqdn[,instance2.fqdn,...]
+```
+
+**DIFFERENT MYSQL PASSWORDS**
+
+Since the mysql passwords should be different for the different instances
+
+**currently this must be done outside of xdmod-fed-* commands**
+
+```bash
+tpm configure --host instace.fqdn
+ --datasource-user theUser --datasource-password thePassword
 ```
 
 #### Validate and install Tungsten on federation
 
 ```bash
-assets/scripts/tungsten-install.sh
+xdmod-fed-tungsten-install
 ```
 
-#### Create ETL for Instance Initialization
-
-```bash
-assets/scripts/xdmod-fed-etl.sh -b instance1.fqdn[,instance2.fqdn,...] -e ./configuration/etl/ -d ./configuration/etl/
-```
 
 ## Setup the Hub
 The following must be agreed upon before Federation setup
@@ -130,5 +127,15 @@ The following must be agreed upon before Federation setup
     -   Error Descriptions
     -   process-buckets
 
+## Expanding the Federation
+**currently this must be done outside of xdmod-fed-* commands**
+read more at: [tcexpand][]
+
+```bash
+./tpm configure --dataservice-name xdmodfederation --members+=instance.fqdn
+```
+
+[tcexpand]: http://docs.continuent.com/tungsten-clustering-5.0/deployment-expanding-slaves.html
 [trfanin]: http://docs.continuent.com/tungsten-replicator-5.0/deployment-fanin.html
 [trprereqs]: http://docs.continuent.com/tungsten-replicator-5.0/prerequisite.html
+[trprereqs2]: http://docs.continuent.com/tungsten-replicator-5.2-oss/prerequisite-host.html

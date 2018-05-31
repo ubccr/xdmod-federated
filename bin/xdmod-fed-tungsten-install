@@ -1,0 +1,59 @@
+#!/bin/bash
+if ! [ $(id -u) = 0 ]; then
+    echo "$0 must be run as root"
+    exit 1
+fi
+
+validate="tpm -q validate &&"
+dest="/opt/continuent"
+version="5.0.1"
+
+usage() {
+    echo "Usage: $0 [-v <string>] [-r <string>] [-s] [-q]" 1>&2;
+    echo "-v Tungsten version (default: $version)" 1>&2;
+    echo "-s skip validations" 1>&2;
+    echo "-q quiet" 1>&2;
+    exit 1;
+}
+
+log() {
+    if [ $quiet != "true" ] ; then
+        echo -e $1
+    fi
+}
+quiet=false
+
+while getopts "v:r:sq" o; do
+    case "${o}" in
+        v)
+            version=${OPTARG}
+            ;;
+        r)
+            build=${OPTARG}
+            ;;
+        s)
+            validate=""
+            ;;
+        q)
+            quiet=true
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+log "Tungsten Install"
+
+if [ -z "${validate}" ] ; then
+    log "\tWARNING: Not verifying configs"
+fi
+executionPath="${dest}/tungsten/tungsten-replicator/bin:\
+${dest}/software/tungsten-replicator-${version}/tools:\
+/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin"
+
+log "\tBeginging Installation"
+
+su - tungsten -c "export PATH='${executionPath}';\
+${validate} tpm -q install"

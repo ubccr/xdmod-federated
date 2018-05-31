@@ -1,0 +1,65 @@
+#!/bin/bash
+if ! [ $(id -u) = 0 ]; then
+    echo "$0 must be run as root"
+    exit 1
+fi
+
+dest="/opt/continuent"
+version="5.0.1"
+hub=`hostname -f`
+
+usage() {
+    echo "Usage: $0 [-h <string>] [-b <string>] [-d </path>] [-v <string>] [-r <string>] [-q]" 1>&2;
+    echo "-h Core (default: $hub)"
+    echo "-i Instances instance1.fqdn[,instance2.fqdn]"
+    echo "-d destination for tungsten download (default: $dest)" 1>&2;
+    echo "-v Tungsten version (default: $version)" 1>&2;
+    echo "-q quiet" 1>&2;
+    exit 1;
+}
+
+log() {
+    if [ $quiet != "true" ] ; then
+        echo -e $1
+    fi
+}
+quiet=false
+
+while getopts "h:i:d:r:v:q" o; do
+    case "${o}" in
+        h)
+            hub=${OPTARG}
+            ;;
+        i)
+            instances=${OPTARG}
+            ;;
+        d)
+            dest=${OPTARG}
+            ;;
+        v)
+            version=${OPTARG}
+            ;;
+        r)
+            build=${OPTARG}
+            ;;
+        q)
+            quiet=true
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+executionPath="${dest}/tungsten/tungsten-replicator/bin:\
+${dest}/software/tungsten-replicator-${version}/tools:\
+/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin"
+
+log "Configuring the federation"
+su - tungsten -c "export PATH='${executionPath}';\
+tpm -q configure xdmodfederation \
+--topology=fan-in \
+--masters=${instances} \
+--master-services=${instances} \
+--members=${hub},${instances}"

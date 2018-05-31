@@ -1,0 +1,83 @@
+#!/bin/bash
+if ! [ $(id -u) = 0 ]; then
+    echo "$0 must be run as root"
+    exit 1
+fi
+
+quiet=false
+skip=false
+dest="/opt/continuent"
+version="5.0.1"
+
+usage() {
+    echo "Usage: $0 [-v <string>] [-r <string>]  [-d </path>] [-s] [-q]" 1>&2;
+    echo "-v Tungsten version (default:$version)" 1>&2;
+    echo "-d destination for tungsten download (default: $dest)" 1>&2;
+    echo "-s skip validations default: $skip" 1>&2;
+    echo "-q quiet" 1>&2;
+    exit 1;
+}
+
+
+log() {
+    if [ $quiet != "true" ] ; then
+        echo -e $1
+    fi
+}
+
+
+while getopts "v:r:d:sq" o; do
+    case "${o}" in
+        v)
+            version=${OPTARG}
+            ;;
+        r)
+            build=${OPTARG}
+            ;;
+        d)
+            dest=${OPTARG}
+            ;;
+        s)
+            skip=true
+            ;;
+        q)
+            quiet=true
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+executionPath="${dest}/tungsten/tungsten-replicator/bin:\
+${dest}/software/tungsten-replicator-${version}/tools:\
+/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin"
+
+# Some hosts will be defaulted to 127.0.0.1
+validations="--skip-validation-check=HostsFileCheck \
+--skip-validation-check=MySQLMyISAMCheck"
+
+defaults="--home-directory=${dest} \
+--auto-recovery-max-attempts=5 \
+--install-directory=${dest} \
+--start-and-report=true \
+--temp-directory=/tmp"
+
+log "Configuring Tungsten defaults"
+if [ $skip == "true" ] ; then
+    log "\tSkipping Validations:\n
+\t\tHostsFileCheck\n
+\t\tMySQLMyISAMCheck\n
+\t\tMySQLSettingsCheck\n
+\t\tNtpdRunningCheck\n
+\t\tSwappinessCheck"
+
+validations="${validations} \
+--skip-validation-check=MySQLSettingsCheck \
+--skip-validation-check=NtpdRunningCheck \
+--skip-validation-check=SwappinessCheck"
+
+fi
+
+su - tungsten -c "export PATH='$executionPath'; tpm -q configure defaults ${defaults} ${validations}"
