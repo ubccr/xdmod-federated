@@ -1,0 +1,57 @@
+#!/bin/bash
+dest="/opt/continuent"
+version="5.0.1"
+
+usage() {
+    echo "Usage: $0 [-v <string>] [-q]" 1>&2;
+    echo "-v Tungsten version (default: $version)" 1>&2;
+    echo "-q quiet" 1>&2;
+    exit 1;
+}
+
+log() {
+    if [ $quiet != "true" ] ; then
+        echo -e $1
+    fi
+}
+quiet=false
+
+while getopts "v:q" o; do
+    case "${o}" in
+        v)
+            version=${OPTARG}
+            ;;
+        q)
+            quiet=true
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+executionPath="${dest}/tungsten/tungsten-replicator/bin:\
+${dest}/software/tungsten-replicator-${version}/tools:\
+/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin"
+
+log "Tungsten"
+log "\tReseting configurations"
+
+su - tungsten -c "export PATH='$executionPath'; \
+tpm -q reset"
+
+log "\tUninstalling from Blades"
+
+su - tungsten -c "export PATH='$executionPath'; \
+tpm -q uninstall --i-am-sure"
+
+log "\tClearing Configs"
+su - tungsten -c "export PATH='$executionPath'; \
+rm -rf ${dest}/software/replicator.conf/*"
+
+su - tungsten -c "export PATH='$executionPath'; \
+rm -rf ${dest}/{relay,share,thl}"
+
+su - tungsten -c "export PATH='$executionPath'; \
+rm -rf ${dest}/software/tungsten-replicator-${version}/deploy.cfg"

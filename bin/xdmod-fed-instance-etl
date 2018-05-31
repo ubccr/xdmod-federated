@@ -62,6 +62,6 @@ for thisInstance in $instances ; do
     $(printf "${etlReplaced}" > ${etlDest}/etl/etl.d/fed-${thisInstance}.json)
     # this should not be hard codeded and should be able to use any etl_overseer
     # also add the ability to pass debugging flag
-    __XDMOD_SHARE_PATH__/tools/etl/etl_overseer.php -p fed.${thisBlade}.bootstrap
+    __XDMOD_SHARE_PATH__/tools/etl/etl_overseer.php -p fed.${thisInstance}.bootstrap
 done
 IFS=$oldIFS
