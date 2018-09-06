@@ -1,10 +1,9 @@
 ---
-title: Federated Overview
+title: federated Overview
 redirect_from:
     - "/8.0/"
-    - ""
 ---
 
 An available Open XDMoD enhancement is Federated. This module provides the
 ability to have multiple disparate Open XDMoD installations replicate raw data
-to a core server to provide an overview of all systems.
+to a Hub server to provide an overview of all systems.
