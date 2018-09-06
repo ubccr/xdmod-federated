@@ -1,24 +1,22 @@
-# Useful commands
+---
+title: Useful Commands
+---
 
-### Specific Service status
-
-```bash
-sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl -service {instance.fqdn . and - replaced with underscore} status"
-```
-
-i.e.
+## Specific Service status
 
 ```bash
 sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl -service {instance.fqdn . and - replaced with underscore} status"
 ```
 
-### Status of filters
+## Status of filters
 
 ```bash
 sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl status -name stages"
 ```
 
-### [Recovering from errors][trterrors]
+## [Recovering from errors][trterrors]
+
+### Skip sequence number
 
 ```bash
 sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl -service {instance.fqdn . and - replaced with underscore} status"
@@ -29,20 +27,7 @@ sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl 
 # pendingErrorSeqno      : -1
 sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl -service {instance.fqdn . and - replaced with underscore} online -skip-seqno <NUM>"
 ```
-
-i.e.
-
-```bash
-sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl -service {instance.fqdn . and - replaced with underscore} status"
-# find
-# pendingError           : NONE
-# pendingErrorCode       : NONE
-# pendingErrorEventId    : NONE
-# pendingErrorSeqno      : -1
-sudo su - tungsten -c "/opt/continuent/tungsten/tungsten-replicator/bin/trepctl -service {instance.fqdn . and - replaced with underscore} online -skip-seqno <NUM>"
-```
-
-In case you need to completely reset an instance
+### Completely reset instance
 
 On the hub:
 ```bash
@@ -73,7 +58,7 @@ mysql {instnace.fqdn with . replaced with -}-modw < instance.fqdn.modw.sql
 tungsten-replicator/bin/trepctl -service ServiceName online
 ```
 
-### Change Configuration of a instance
+## Change Configuration of a instance
 
 If you want to replicate more or less data
 
@@ -81,7 +66,7 @@ If you want to replicate more or less data
 /opt/continuent/tungsten/tools/tpm update --repl-svc-extractor-filters=replicate --property=replicator.filter.replicate.ignore='moddb,mod_logger,mod_shredder,mod_hpcdb,modw_aggregates,modw_filters,modw.tmp*'
 ```
 
-### Logs
+## Logs
 
 ```bash
 tail -f /opt/continuent/tungsten/tungsten-replicator/log/* | egrep -v "BufferedFileDataInput| Protocol Received protocol heartbeat|DEBUG LogConnection|DEBUG LogFile Reading log file position"
