@@ -1,4 +1,7 @@
-# Definitions
+---
+title: Glossary
+---
+## Definitions
 
 The use of master, slave, and client are different depending on what part of the federation you are referencing so the following terms will be used:
 
