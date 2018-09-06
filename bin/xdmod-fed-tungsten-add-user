@@ -44,7 +44,7 @@ shift $((OPTIND-1))
 
 log "Tungsten"
 log "\tCreate USER"
-usermod -G mysql tungsten
+useradd -G mysql tungsten
 if [ $skipSSH != "true" ] ; then
     log "\tGenerate SSH Key"
     su - tungsten -c 'ssh-keygen -f $HOME/.ssh/id_rsa -N ""'
@@ -62,13 +62,14 @@ if [ $skipMySQL != "true" ] ; then
     log "\tMySQL user"
     echo "SET GLOBAL log_bin_trust_function_creators = 1;
     DELETE FROM mysql.user WHERE User='';
-    GRANT ALL ON *.* TO tungsten@'%' IDENTIFIED BY 'MzRlMDhjNjA2ZjJhZTBhMmNlYmM2MmU4' WITH GRANT OPTION ;
+    GRANT ALL ON *.* TO tungsten@'%' IDENTIFIED BY '${PASSWORD}' WITH GRANT OPTION ;
     FLUSH PRIVILEGES;   " | mysql
     cat > /home/tungsten/.my.cnf << EOL
 [client]
 user = tungsten
-pass = MzRlMDhjNjA2ZjJhZTBhMmNlYmM2MmU4
+pass = ${PASSWORD}
 EOL
     chmod 600 /home/tungsten/.my.cnf
-    chown tungsten:tungsten /home/tungsten/.my.cnf
+    find /home/tungsten/ -type d -exec chmod 755 {} \;
+    find /home/tungsten/ -exec chown tungsten:tungsten {} \;
 fi

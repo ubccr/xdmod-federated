@@ -87,6 +87,6 @@ for thisInstance in $instances ; do
     --repl-svc-applier-filters=rename \
     --property=replicator.filter.rename.definitionsFile=${dest}/software/conf/${cleanedName}-rename.csv \
     --repl-svc-extractor-filters=replicate \
-    --property=replicator.filter.replicate.ignore='mod_logger,mod_shredder,mod_hpcdb,modw_aggregates,modw_filters,modw.tmp*'"
+    --property=replicator.filter.replicate.ignore='moddb,mod_logger,mod_shredder,mod_hpcdb,modw_aggregates,modw_filters,modw.tmp*'"
 done
 IFS=$oldIFS
