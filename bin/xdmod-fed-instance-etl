@@ -54,7 +54,7 @@ fi
 oldIFS=$IFS
 IFS=','
 for thisInstance in $instances ; do
-    thisInstance=$(echo ${thisInstance} | sed 's/[^0-9,a-z,A-Z$_]/-/g')
+    thisInstance=$(echo ${thisInstance} | sed 's/[^0-9,a-z,A-Z$_]/_/g')
     etlTemplate=$(< ${etlSource}/etl/etl_templates.d/etl.d/federated.json)
 
     etlReplaced=$(printf "${etlTemplate}" | sed -e "s/\${instance}/${thisInstance}/g")
