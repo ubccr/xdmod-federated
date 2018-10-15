@@ -17,7 +17,7 @@
                 }
             }
         },
-        "fed.${instance}.bootstrap": {
+        "fed-${instance}-bootstrap": {
             "endpoints": {
                 "destination": {
                     "type": "mysql",
@@ -32,17 +32,17 @@
             "options_class": "IngestorOptions",
             "enabled": true
         },
-        "fed.${instance}.ingest": {
+        "fed-${instance}-ingest": {
             "class": "DatabaseIngestor",
             "namespace": "ETL\\\\\\Ingestor",
             "options_class": "IngestorOptions",
             "enabled": true
         }
     },
-    "fed.${instance}.bootstrap": {
+    "fed-${instance}-bootstrap": {
         "$ref": "etl_pipelines.d/jobs-xdw.json#/bootstrap"
     },
-    "fed.${instance}.ingest": {
+    "fed-${instance}-ingest": {
         "$ref": "etl_pipelines.d/federated.json#/ingest"
     }
 }
