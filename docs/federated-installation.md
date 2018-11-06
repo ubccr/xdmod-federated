@@ -117,12 +117,11 @@ Since the mysql passwords should be different for the different instances
 **currently this must be done outside of xdmod-fed-* commands**
 
 ```bash
-tpm configure --host instace.fqdn
- --datasource-user theUser --datasource-password thePassword
+tpm configure --host instace.fqdn --datasource-user theUser --datasource-password thePassword
 ```
 
 #### Validate and install Tungsten on federation
-
+**NOTE: this processes opens up MANY connections in rapid succesion to the instances, rate limiting may cause issues**
 ```bash
 xdmod-fed-tungsten-install
 ```
@@ -148,22 +147,28 @@ su - tungsten -c '/opt/continuent/software/tungsten-replicator-5.0.1/tools/tpm c
 
 xdmod-fed-tungsten-config-instance -i instance.fqdn
 
+xdmod-fed-instance-etl -i
+
 su - tungsten -c '/opt/continuent/software/tungsten-replicator-5.0.1/tools/tpm configure xdmodfederation --host instance.fqdn --datasource-user theUser --datasource-password thePassword'
 ```
 
 Get all the current instances, they will be needed for the next step
 
 ```bash
-/opt/continuent/software/tungsten-replicator-5.0.1/tools/tpm dump | grep '\-\-masters' | cut -d'=' -f 2 | cut -d' ' -f
+/opt/continuent/software/tungsten-replicator-5.0.1/tools/tpm dump | grep '\-\-masters' | cut -d'=' -f 2 | cut -d' ' -f 1
 ```
 
 **NOTE: This requires you to put in all other instances**
 ```bash
-su - tungsten -c '/opt/continuent/software/tungsten-replicator-5.0.1/tools/tpm configure xdmodfederation --master=instance.fqdn'
+su - tungsten -c '/opt/continuent/software/tungsten-replicator-5.0.1/tools/tpm configure xdmodfederation --master=instance.fqdn[other instances]'
 ```
 
 ```bash
-su - tungsten -c '/opt/continuent/software/tungsten-replicator-5.0.1/tools/tpm update'
+su - tungsten -c '/opt/continuent/software/tungsten-replicator-5.0.1/tools/tpm configure xdmodfederation --master-services=instance.fqdn[other instances]'
+```
+
+```bash
+su - tungsten -c '/opt/continuent/software/tungsten-replicator-5.0.1/tools/tpm update xdmodfederation'
 ```
 
 [tcexpand]: http://docs.continuent.com/tungsten-clustering-5.0/deployment-expanding-slaves.html
