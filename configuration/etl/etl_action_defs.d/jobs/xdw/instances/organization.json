@@ -28,6 +28,9 @@
                 "schema": "${SOURCE_SCHEMA}"
             }
         ],
+        "where": [
+            "id != -1"
+        ],
         "macros": [
             {
                 "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
