@@ -1,0 +1,38 @@
+{
+    "table_definition": [
+        {
+            "$ref": "${table_definition_dir}/cloud_common/instance_type.json#/table_definition"
+        }
+    ],
+    "source_query": {
+        "records": {
+            "resource_id": "drf.id",
+            "instance_type": "scitf.instance_type",
+            "display": "scitf.display",
+            "description": "scitf.description",
+            "num_cores": "scitf.num_cores",
+            "memory_mb": "scitf.memory_mb",
+            "disk_gb": "scitf.disk_gb",
+            "start_time": "scitf.start_time"
+        },
+
+        "joins": [
+            {
+                "name": "instance_type",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "scitf"
+            },
+            {
+                "name": "resourcefact",
+                "schema": "${UTILITY_SCHEMA}",
+                "alias": "drf",
+                "on": "drf.organization_id = (SELECT id FROM ${UTILITY_SCHEMA}.organization WHERE federation_instance_id = ${instance_id}) AND drf.resource_origin_id = scitf.resource_id"
+            }
+        ],
+        "macros": [
+            {
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
+            }
+        ]
+    }
+}

@@ -4,7 +4,8 @@
         "file": "federated/get-instance-id.sql",
         "args": {
             "src": "${SOURCE_SCHEMA}",
-            "dest": "${DESTINATION_SCHEMA}"
+            "dest": "${DESTINATION_SCHEMA}",
+            "util": "${UTILITY_SCHEMA}"
         }
     }
 }

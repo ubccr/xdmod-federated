@@ -1,139 +1,113 @@
 {
+    "description": "Federation Jobs Ingest",
     "ingest": [
         {
-            "name": "instance-ogranization-ingest",
-            "definition_file": "jobs/xdw/instances/organization.json",
-            "description": "Organization Ingest",
+            "name": "instance-ogranization",
+            "definition_file": "federated/jobs/organization.json",
+            "description": "Organization *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-resource-ingest",
-            "definition_file": "jobs/xdw/instances/resource-fact.json",
-            "description": "Resource Ingest",
+            "name": "instance-resource",
+            "definition_file": "federated/jobs/resource-fact.json",
+            "description": "Resource *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-queue-ingest",
-            "definition_file": "jobs/xdw/instances/queue.json",
-            "description": "Queue ingestor",
+            "name": "instance-queue",
+            "definition_file": "federated/jobs/queue.json",
+            "description": "Queue *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-resource-spec-ingest",
-            "definition_file": "jobs/xdw/instances/resource-specs.json",
-            "description": "Resource Spec Ingest",
+            "name": "instance-resource-spec",
+            "definition_file": "federated/jobs/resource-specs.json",
+            "description": "Resource Spec *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-resource-allocated-ingest",
-            "definition_file": "jobs/xdw/instances/resource-allocated.json",
-            "description": "Resource Allocation Ingest",
+            "name": "instance-resource-allocated",
+            "definition_file": "federated/jobs/resource-allocated.json",
+            "description": "Resource Allocation *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-hosts-ingest",
-            "definition_file": "jobs/xdw/instances/hosts.json",
-            "description": "Hosts Ingest",
+            "name": "instance-hosts",
+            "definition_file": "federated/jobs/hosts.json",
+            "description": "Hosts *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-person-ingest",
-            "definition_file": "jobs/xdw/instances/person.json",
-            "description": "Person ingestor",
+            "name": "instance-person",
+            "definition_file": "federated/jobs/person.json",
+            "description": "Person *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-gateway-person-ingest",
-            "definition_file": "jobs/xdw/instances/gateway-person.json",
-            "description": "Gateway Person ingestor",
-            "enabled": false,
+            "name": "instance-piperson",
+            "definition_file": "federated/jobs/piperson.json",
+            "description": "PI Person *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-piperson-ingest",
-            "definition_file": "jobs/xdw/instances/piperson.json",
-            "description": "PI Person ingestor",
+            "name": "instance-account",
+            "definition_file": "federated/jobs/account.json",
+            "description": "Account *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-account-ingest",
-            "definition_file": "jobs/xdw/instances/account.json",
-            "description": "Account ingestor",
+            "name": "instance-request",
+            "definition_file": "federated/jobs/request.json",
+            "description": "Request *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-request-ingest",
-            "definition_file": "jobs/xdw/instances/request.json",
-            "description": "Request ingestor",
+            "name": "instance-allocation",
+            "definition_file": "federated/jobs/allocation.json",
+            "description": "Allocation *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-allocation-ingest",
-            "definition_file": "jobs/xdw/instances/allocation.json",
-            "description": "Allocation ingestor",
+            "name": "instance-allocation-on-resource",
+            "definition_file": "federated/jobs/allocation-on-resource.json",
+            "description": "Allocation on Resource *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-allocation-on-resource-ingest",
-            "definition_file": "jobs/xdw/instances/allocation-on-resource.json",
-            "description": "Allocation on Resource ingestor",
+            "name": "instance-allocation-breakdown",
+            "definition_file": "federated/jobs/allocation-breakdown.json",
+            "description": "Allocation Breakdown *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-allocation-adjustment-ingest",
-            "definition_file": "jobs/xdw/instances/allocation-adjustment.json",
-            "description": "Allocation Adjustment ingestor",
-            "enabled": false,
+            "name": "instance-system-account",
+            "definition_file": "federated/jobs/system-account.json",
+            "description": "System Account *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-allocation-breakdown-ingest",
-            "definition_file": "jobs/xdw/instances/allocation-breakdown.json",
-            "description": "Allocation Breakdown ingestor",
+            "name": "instance-job-record",
+            "definition_file": "federated/jobs/job-records.json",
+            "description": "Job records *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-system-account-ingest",
-            "definition_file": "jobs/xdw/instances/system-account.json",
-            "description": "System Account ingestor",
+            "name": "instance-job-task",
+            "definition_file": "federated/jobs/job-tasks.json",
+            "description": "Job tasks *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-job-record-ingest",
-            "definition_file": "jobs/xdw/instances/job-records.json",
-            "description": "Job records ingestor",
+            "name": "instance-jobhosts",
+            "definition_file": "federated/jobs/jobhosts.json",
+            "description": "Job Hosts *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
-            "name": "instance-job-task-ingest",
-            "definition_file": "jobs/xdw/instances/job-tasks.json",
-            "description": "Job tasks ingestor",
+            "name": "instance-pi",
+            "definition_file": "federated/jobs/principal-investigator.json",
+            "description": "pi *requires: -d instance_name*",
             "truncate_destination": false
-        },
-        {
-            "name": "instance-jobhosts-ingest",
-            "definition_file": "jobs/xdw/instances/jobhosts.json",
-            "description": "Job Hosts ingestor",
-            "truncate_destination": false
-        },
-        {
-            "name": "instance-pi-ingest",
-            "definition_file": "jobs/xdw/instances/principal-investigator.json",
-            "description": "pi ingestor",
-            "truncate_destination": false
-        },
-        {
-            "name": "instance-ppl-on-account-ingest",
-            "definition_file": "jobs/xdw/instances/people-on-account.json",
-            "description": "People On Account ingestor",
-            "enabled": false,
-            "truncate_destination": false
-        },
-        {
-            "name": "instance-min-max-date",
-            "definition_file": "jobs/xdw/min-max-date.json",
-            "description": "Job Record min and max job dates",
-            "truncate_destination": true
         }
     ]
 }

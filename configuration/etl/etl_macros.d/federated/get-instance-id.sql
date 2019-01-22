@@ -2,7 +2,11 @@
     SELECT
         federation_instance_id
     FROM
-        ${dest}.federation_instances
+        ${util}.federation_instances
     WHERE
-        prefix = TRIM('-modw' FROM '${src}')
+        prefix =
+            LEFT(
+                '${src}',
+                CHAR_LENGTH('${src}') - LENGTH(SUBSTRING_INDEX('${src}', '-', -1))-1
+            )
 )

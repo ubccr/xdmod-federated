@@ -1,0 +1,112 @@
+{
+    "module": "fed",
+    "defaults": {
+        "global": {
+            "#variables": {
+                "required": [{
+                    "name": "instance_name",
+                    "type": "String"
+                }],
+                "optional": [{
+                    "name": "instance_id",
+                    "type": "integer",
+                    "#": "the instane id from `modw`.`federation_instances`",
+                    "#": "for the prefix that equals instance_name",
+                    "#": "this is an optimization and will run the macro",
+                    "#": "that will find the id based on the name if not provided"
+                }]
+            },
+            "endpoints": {
+                "source": {
+                    "type": "mysql",
+                    "name": "instance source",
+                    "config": "datawarehouse",
+                    "schema": "${instance_name}-modw",
+                    "create_schema_if_not_exists": true
+                },
+                "destination": {
+                    "type": "mysql",
+                    "name": "Cloud timing test DB",
+                    "config": "datawarehouse",
+                    "schema": "modw"
+                },
+                "utility": {
+                    "type": "mysql",
+                    "name": "Cloud timing test DB",
+                    "config": "datawarehouse",
+                    "schema": "modw"
+                }
+            }
+        },
+        "bootstrap": {
+            "endpoints": {
+                "destination": {
+                    "type": "mysql",
+                    "name": "instance source",
+                    "config": "datawarehouse",
+                    "schema": "${instance_name}-modw",
+                    "create_schema_if_not_exists": true
+                }
+            },
+            "class": "StructuredFileIngestor",
+            "namespace": "ETL\\Ingestor",
+            "options_class": "IngestorOptions",
+            "enabled": true
+        },
+        "bootstrap-cloud": {
+            "endpoints": {
+                "destination": {
+                    "type": "mysql",
+                    "name": "cloud instance destination",
+                    "config": "datawarehouse",
+                    "schema": "${instance_name}-modw_cloud",
+                    "create_schema_if_not_exists": true
+                }
+            },
+            "class": "StructuredFileIngestor",
+            "namespace": "ETL\\Ingestor",
+            "options_class": "IngestorOptions",
+            "enabled": true
+        },
+        "ingest": {
+            "class": "DatabaseIngestor",
+            "namespace": "ETL\\Ingestor",
+            "options_class": "IngestorOptions",
+            "enabled": true
+        },
+        "ingest-cloud": {
+            "endpoints": {
+                "destination": {
+                    "type": "mysql",
+                    "name": "cloud instance destination",
+                    "config": "datawarehouse",
+                    "schema": "modw_cloud",
+                    "create_schema_if_not_exists": true
+                },
+                "source": {
+                    "type": "mysql",
+                    "name": "cloud instance source",
+                    "config": "datawarehouse",
+                    "schema": "${instance_name}-modw_cloud",
+                    "create_schema_if_not_exists": true
+                }
+            },
+            "class": "DatabaseIngestor",
+            "namespace": "ETL\\Ingestor",
+            "options_class": "IngestorOptions",
+            "enabled": true
+        }
+    },
+    "bootstrap": {
+        "$ref": "etl_pipelines.d/jobs-xdw.json#/bootstrap"
+    },
+    "bootstrap-cloud": {
+        "$ref":"etl.d/jobs_cloud_common.json#/jobs-cloud-common"
+    },
+    "ingest": {
+        "$ref": "etl_pipelines.d/federated.json#/ingest"
+    },
+    "ingest-cloud": {
+        "$ref": "etl_pipelines.d/federated-cloud.json#/ingest"
+    }
+}
