@@ -1,0 +1,32 @@
+{
+    "table_definition": [{
+        "$ref": "${table_definition_dir}/cloud_common/host.json#/table_definition"
+    }],
+    "source_query": {
+        "records": {
+            "resource_id": "drf.id",
+            "hostname": "schf.hostname"
+        },
+        "joins": [
+            {
+                "name": "host",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "schf"
+            },
+            {
+                "name": "resourcefact",
+                "schema": "${UTILITY_SCHEMA}",
+                "alias": "drf",
+                "on": "drf.organization_id = (SELECT id FROM ${UTILITY_SCHEMA}.organization WHERE federation_instance_id = ${instance_id}) AND drf.resource_origin_id = schf.resource_id"
+            }
+        ],
+        "where": [
+            "schf.host_id != -1"
+        ],
+        "macros": [
+            {
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
+            }
+        ]
+    }
+}

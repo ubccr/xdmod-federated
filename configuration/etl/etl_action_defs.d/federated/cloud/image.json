@@ -1,0 +1,29 @@
+{
+    "table_definition": [{
+        "$ref": "${table_definition_dir}/cloud_common/image.json#/table_definition"
+    }],
+    "source_query": {
+        "records": {
+            "resource_id": "drf.id",
+            "image": "scif.image"
+        },
+        "joins": [
+            {
+                "name": "image",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "scif"
+            },
+            {
+                "name": "resourcefact",
+                "schema": "${UTILITY_SCHEMA}",
+                "alias": "drf",
+                "on": "drf.organization_id = (SELECT id FROM ${UTILITY_SCHEMA}.organization WHERE federation_instance_id = ${instance_id}) AND drf.resource_origin_id = scif.resource_id"
+            }
+        ],
+        "macros": [
+            {
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
+            }
+        ]
+    }
+}

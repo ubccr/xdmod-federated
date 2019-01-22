@@ -1,14 +1,12 @@
 #!/bin/bash
 
-# Turn these into sub commands maybe with something like:
-# https://github.com/basecamp/sub
-# or https://github.com/jeffreyroberts/sub for sub sub commands
-#
+# This has been deprecated, please use xdmod-setup
 etlSource="__XDMOD_ETC_PATH__"
 etlDest="__XDMOD_ETC_PATH__"
 
 usage() {
     echo "Usage: $0 -i <string> [-e <string>] [-d] [-q]" 1>&2;
+    echo "**This command has been deprecated, please use xdmod-setup**"
     echo "-i Instances instance1.fqdn[,instance2.fqdn]"
     echo "-e etl input (default: $etlSource)" 1>&2;
     echo "-d etl output (default: $etlDest)" 1>&2;
@@ -55,13 +53,6 @@ oldIFS=$IFS
 IFS=','
 for thisInstance in $instances ; do
     thisInstance=$(echo ${thisInstance} | sed 's/[^0-9,a-z,A-Z$_]/_/g')
-    etlTemplate=$(< ${etlSource}/etl/etl_templates.d/etl.d/federated.json)
-
-    etlReplaced=$(printf "${etlTemplate}" | sed -e "s/\${instance}/${thisInstance}/g")
-
-    $(printf "${etlReplaced}" > ${etlDest}/etl/etl.d/fed-${thisInstance}.json)
-    # this should not be hard codeded and should be able to use any etl_overseer
-    # also add the ability to pass debugging flag
-    __XDMOD_SHARE_PATH__/tools/etl/etl_overseer.php -p fed.${thisInstance}.bootstrap
+    __XDMOD_SHARE_PATH__/tools/etl/etl_overseer.php -p fed.bootstrap -p fed.bootstrap-cloud -d instance_name=$thisInstance
 done
 IFS=$oldIFS

@@ -5,9 +5,9 @@
     "source_query": {
         "records": {
             "organization_id": "dof.id",
-            "name": "CONCAT (oof.abbrev, '-' , orf.code)",
+            "name": "CONCAT(oof.abbrev, '-' , orf.code)",
             "resourcetype_id": "orf.resourcetype_id",
-            "code": "orf.code",
+            "code": "CONCAT(oof.abbrev, '-' , orf.code)",
             "description": "orf.description",
             "start_date": "orf.start_date",
             "start_date_ts": "orf.start_date_ts",

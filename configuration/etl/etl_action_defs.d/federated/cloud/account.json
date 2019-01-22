@@ -1,0 +1,36 @@
+{
+    "table_definition": [{
+        "$ref": "${table_definition_dir}/cloud_common/account.json#/table_definition"
+    }],
+    "source_query": {
+        "records": {
+            "resource_id": "drf.id",
+            "provider_account": "scaf.provider_account",
+            "display": "CONCAT(scaf.display, ' (', dof.abbrev, ')')"
+        },
+        "joins": [
+            {
+                "name": "account",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "scaf"
+            },
+            {
+                "name": "resourcefact",
+                "schema": "${UTILITY_SCHEMA}",
+                "alias": "drf",
+                "on": "drf.organization_id = (SELECT id FROM ${UTILITY_SCHEMA}.organization WHERE federation_instance_id = ${instance_id}) AND drf.resource_origin_id = scaf.resource_id"
+            },
+            {
+                "schema": "${UTILITY_SCHEMA}",
+                "name": "organization",
+                "alias": "dof",
+                "on": "dof.id = drf.organization_id"
+            }
+        ],
+        "macros": [
+            {
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
+            }
+        ]
+    }
+}

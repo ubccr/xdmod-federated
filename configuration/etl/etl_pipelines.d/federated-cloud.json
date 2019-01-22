@@ -1,0 +1,66 @@
+{
+    "#": "Resources are ingested as part of regular federation",
+    "#": "fed.ingest.instance-ogranization",
+    "#": "fed.ingest.instance-resource",
+    "description": "Federation Jobs Ingest",
+    "vars": {
+        "required": [{
+            "name": "instance_name",
+            "type": "String"
+        }],
+        "optional":[{
+            "name": "instance_id",
+            "type": "integer",
+            "#": "the instane id from `modw`.`federation_instances`",
+            "#": "for the prefix that equals instance_name",
+            "#": "this is an optimization and will run the macro",
+            "#": "that will find the id based on the name if not provided"
+        }]
+    },
+    "ingest": [
+        {
+            "name": "image",
+            "definition_file": "federated/cloud/image.json",
+            "description": "Cloud Image *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
+            "#": "This is currently not being used for anything.",
+            "#": "However we want to maintain data integrity.",
+            "name": "host",
+            "definition_file": "federated/cloud/host.json",
+            "description": "Cloud Host *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
+            "name": "instance_type",
+            "definition_file": "federated/cloud/instance-type.json",
+            "description": "Cloud Instance *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
+            "name": "account",
+            "definition_file": "federated/cloud/account.json",
+            "description": "Cloud Instance *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
+            "name": "instance",
+            "definition_file": "federated/cloud/instance.json",
+            "description": "Cloud Instance *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
+            "name": "event",
+            "definition_file": "federated/cloud/event.json",
+            "description": "Event *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
+            "name": "instance_data",
+            "definition_file": "federated/cloud/instance-data.json",
+            "description": "Cloud Instance Data *requires: -d instance_name*",
+            "truncate_destination": false
+        }
+    ]
+}

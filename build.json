@@ -1,8 +1,8 @@
 {
     "name": "xdmod-federated",
-    "version": "8.0.0",
-    "release": "0.2",
-    "prerelease": "beta0.20180531",
+    "version": "8.1.0",
+    "release": "0.1",
+    "prerelease": "beta1.20190122",
     "files": {
         "include_paths": [
         ],
@@ -21,6 +21,7 @@
     },
     "file_maps": {
         "data": [
+            "classes"
         ],
         "bin": [
             "bin/"
