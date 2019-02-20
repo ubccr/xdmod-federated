@@ -56,6 +56,11 @@ xdmod-fed-tungsten-add-user
 
 Create instance databases on Hub
 
+This can be done as part of `xdmod-setup`
+
+Otherwise you can use the following commands:
+
+
 **(replacing instance\d.fqdn with the fqdn of the instance(s))**
 
 ```bash

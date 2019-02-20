@@ -1,0 +1,95 @@
+{
+    "table_definition": [
+        {
+            "$ref": "${table_definition_dir}/cloud_common/instance_data.json#/table_definition"
+        }
+    ],
+    "source_query": {
+        "records": {
+            "resource_id": "drf.id",
+            "event_id": "dcef.event_id",
+            "image_id": "dcimf.image_id",
+            "instance_type_id": "dcitf.instance_type_id",
+            "host_id": "dchf.host_id"
+        },
+
+        "joins": [
+            {
+                "name": "instance_data",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "scidf"
+            },
+            {
+                "name": "resourcefact",
+                "schema": "${UTILITY_SCHEMA}",
+                "alias": "drf",
+                "on": "drf.organization_id = (SELECT id FROM ${UTILITY_SCHEMA}.organization WHERE federation_instance_id = ${instance_id}) AND drf.resource_origin_id = scidf.resource_id"
+            },
+            {
+                "name": "host",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "schf",
+                "on":"schf.host_id = scidf.host_id"
+            },
+            {
+                "name": "host",
+                "schema": "${DESTINATION_SCHEMA}",
+                "alias": "dchf",
+                "on": "dchf.resource_id = drf.id AND dchf.hostname = schf.hostname"
+            },
+            {
+                "name": "instance_type",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "scitf",
+                "on": "scitf.instance_type_id = scidf.instance_type_id"
+            },
+            {
+                "name": "instance_type",
+                "schema": "${DESTINATION_SCHEMA}",
+                "alias": "dcitf",
+                "on": "dcitf.resource_id = drf.id AND dcitf.instance_type = scitf.instance_type AND dcitf.num_cores = scitf.num_cores AND dcitf.memory_mb = scitf.memory_mb AND dcitf.disk_gb = scitf.disk_gb"
+            },
+            {
+                "name": "event",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "scef",
+                "on": "scef.event_id = scidf.event_id"
+            },
+            {
+                "name": "instance",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "scif",
+                "on": "scif.instance_id = scef.instance_id"
+            },
+            {
+                "name": "instance",
+                "schema": "${DESTINATION_SCHEMA}",
+                "alias": "dcif",
+                "on": "dcif.resource_id = drf.id AND dcif.provider_identifier = scif.provider_identifier"
+            },
+            {
+                "name": "event",
+                "schema": "${DESTINATION_SCHEMA}",
+                "alias": "dcef",
+                "on": "dcef.resource_id = drf.id AND dcef.event_time_utc = scef.event_time_utc AND dcef.event_type_id = scef.event_type_id AND dcef.record_type_id = scef.record_type_id AND dcef.instance_id = dcif.instance_id"
+            },
+            {
+                "name": "image",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "scimf",
+                "on": "scimf.image_id = scidf.image_id"
+            },
+            {
+                "name": "image",
+                "schema": "${DESTINATION_SCHEMA}",
+                "alias": "dcimf",
+                "on": "dcif.resource_id = drf.id AND dcif.provider_identifier = scif.provider_identifier"
+            }
+        ],
+        "macros": [
+            {
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
+            }
+        ]
+    }
+}

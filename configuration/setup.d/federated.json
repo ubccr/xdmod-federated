@@ -1,0 +1,9 @@
+{
+    "+menu": [
+        {
+            "position": 300,
+            "label": "Federated module Setup",
+            "handler": "FederatedSetup"
+        }
+    ]
+}
