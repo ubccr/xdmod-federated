@@ -1,4 +1,5 @@
 {
+    "#name": "fed.ingest-cloud.instance",
     "table_definition": [
         {
             "$ref": "${table_definition_dir}/cloud_common/instance.json#/table_definition"
@@ -7,9 +8,9 @@
     "source_query": {
         "records": {
             "resource_id": "drf.id",
-            "account_id": "dcaf.account_id",
+            "instance_id": "scif.instance_id",
+            "account_id": "scif.account_id",
             "provider_identifier": "COALESCE(scif.provider_identifier, 'unknown')",
-            "#": "person_id is not currently populated correctly in the cloud, this is going to be ignored for now.",
             "person_id": "upf.id"
         },
 
@@ -24,18 +25,6 @@
                 "schema": "${UTILITY_SCHEMA}",
                 "alias": "drf",
                 "on": "drf.organization_id = (SELECT id FROM ${UTILITY_SCHEMA}.organization WHERE federation_instance_id = ${instance_id}) AND drf.resource_origin_id = scif.resource_id"
-            },
-            {
-                "name": "account",
-                "schema": "${SOURCE_SCHEMA}",
-                "alias": "scaf",
-                "on": "scaf.account_id = scif.account_id"
-            },
-            {
-                "name": "account",
-                "schema": "${DESTINATION_SCHEMA}",
-                "alias": "dcaf",
-                "on": "dcaf.provider_account = scaf.provider_account AND dcaf.resource_id = drf.id"
             },
             {
                 "schema": "${UTILITY_SCHEMA}",
