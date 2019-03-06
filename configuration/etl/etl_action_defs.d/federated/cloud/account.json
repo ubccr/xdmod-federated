@@ -1,10 +1,12 @@
 {
+    "#name": "fed.ingest-cloud.account",
     "table_definition": [{
         "$ref": "${table_definition_dir}/cloud_common/account.json#/table_definition"
     }],
     "source_query": {
         "records": {
             "resource_id": "drf.id",
+            "account_id": "scaf.account_id",
             "provider_account": "scaf.provider_account",
             "display": "CONCAT(scaf.display, ' (', dof.abbrev, ')')"
         },

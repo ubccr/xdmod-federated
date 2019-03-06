@@ -2,6 +2,7 @@
     "#": "Resources are ingested as part of regular federation",
     "#": "fed.ingest.instance-ogranization",
     "#": "fed.ingest.instance-resource",
+    "#name": "fed.ingest-cloud",
     "description": "Federation Jobs Ingest",
     "vars": {
         "required": [{
@@ -11,7 +12,7 @@
         "optional":[{
             "name": "instance_id",
             "type": "integer",
-            "#": "the instane id from `modw`.`federation_instances`",
+            "#": "the instance id from `modw`.`federation_instances`",
             "#": "for the prefix that equals instance_name",
             "#": "this is an optimization and will run the macro",
             "#": "that will find the id based on the name if not provided"
@@ -60,7 +61,10 @@
             "name": "instance_data",
             "definition_file": "federated/cloud/instance-data.json",
             "description": "Cloud Instance Data *requires: -d instance_name*",
-            "truncate_destination": false
+            "truncate_destination": false,
+            "hide_sql_warning_codes": [
+                1062
+            ]
         }
     ]
 }

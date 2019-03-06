@@ -1,4 +1,5 @@
 {
+    "#name": "fed.ingest-cloud.event",
     "table_definition": [
         {
             "$ref": "${table_definition_dir}/cloud_common/event.json#/table_definition"
@@ -7,11 +8,14 @@
     "source_query": {
         "records": {
             "resource_id": "drf.id",
-            "instance_id": "dcif.instance_id",
-            "event_time_utc": "scef.event_time_utc",
+            "event_id": "scef.event_id",
+            "instance_id": "scef.instance_id",
+            "event_time_ts": "scef.event_time_ts",
             "event_type_id": "scef.event_type_id",
             "record_type_id": "scef.record_type_id",
-            "host_id": "dchf.host_id",
+            "host_id": "scef.host_id",
+            "person_id": "upf.id",
+            "systemaccount_id": "usa.id",
             "submission_venue_id": "scef.submission_venue_id"
         },
 
@@ -22,34 +26,22 @@
                 "alias": "scef"
             },
             {
-                "name": "host",
-                "schema": "${SOURCE_SCHEMA}",
-                "alias": "schf",
-                "on":"schf.host_id = scef.host_id"
-            },
-            {
-                "name": "instance",
-                "schema": "${SOURCE_SCHEMA}",
-                "alias": "scif",
-                "on": "scif.instance_id = scef.instance_id"
-            },
-            {
                 "name": "resourcefact",
                 "schema": "${UTILITY_SCHEMA}",
                 "alias": "drf",
-                "on": "drf.organization_id = (SELECT id FROM ${UTILITY_SCHEMA}.organization WHERE federation_instance_id = ${instance_id}) AND drf.resource_origin_id = scif.resource_id"
+                "on": "drf.organization_id = (SELECT id FROM ${UTILITY_SCHEMA}.organization WHERE federation_instance_id = ${instance_id}) AND drf.resource_origin_id = scef.resource_id"
             },
             {
-                "name": "instance",
-                "schema": "${DESTINATION_SCHEMA}",
-                "alias": "dcif",
-                "on": "dcif.provider_identifier = scif.provider_identifier AND dcif.resource_id = drf.id"
+                "schema": "${UTILITY_SCHEMA}",
+                "name": "person",
+                "alias": "upf",
+                "on": "upf.person_origin_id = scef.person_id AND upf.organization_id = drf.organization_id"
             },
             {
-                "name": "host",
-                "schema": "${DESTINATION_SCHEMA}",
-                "alias": "dchf",
-                "on": "dchf.resource_id = drf.id AND dchf.hostname = schf.hostname"
+                "schema": "${UTILITY_SCHEMA}",
+                "name": "systemaccount",
+                "alias": "usa",
+                "on": "usa.person_id = upf.id and usa.resource_id = drf.id"
             }
         ],
         "macros": [

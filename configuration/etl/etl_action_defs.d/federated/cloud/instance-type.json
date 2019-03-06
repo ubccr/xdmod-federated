@@ -1,4 +1,5 @@
 {
+    "#name": "fed.ingest-cloud.instance-type",
     "table_definition": [
         {
             "$ref": "${table_definition_dir}/cloud_common/instance_type.json#/table_definition"
@@ -8,6 +9,7 @@
         "records": {
             "resource_id": "drf.id",
             "instance_type": "scitf.instance_type",
+            "instance_type_id": "scitf.instance_type_id",
             "display": "scitf.display",
             "description": "scitf.description",
             "num_cores": "scitf.num_cores",
