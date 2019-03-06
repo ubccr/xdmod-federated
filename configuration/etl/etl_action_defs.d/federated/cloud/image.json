@@ -1,11 +1,13 @@
 {
+    "#name": "fed.ingest-cloud.images",
     "table_definition": [{
         "$ref": "${table_definition_dir}/cloud_common/image.json#/table_definition"
     }],
     "source_query": {
         "records": {
             "resource_id": "drf.id",
-            "image": "scif.image"
+            "image": "scif.image",
+            "image_id": "scif.image_id"
         },
         "joins": [
             {
