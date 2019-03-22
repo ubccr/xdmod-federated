@@ -11,7 +11,7 @@
             "instance_id": "scif.instance_id",
             "account_id": "scif.account_id",
             "provider_identifier": "COALESCE(scif.provider_identifier, 'unknown')",
-            "person_id": "upf.id"
+            "person_id": "COALESCE(upf.id, -1)"
         },
 
         "joins": [
@@ -30,7 +30,8 @@
                 "schema": "${UTILITY_SCHEMA}",
                 "name": "person",
                 "alias": "upf",
-                "on": "upf.person_origin_id = scif.person_id AND upf.organization_id = drf.organization_id"
+                "on": "upf.person_origin_id = scif.person_id AND upf.organization_id = drf.organization_id",
+                "type": "LEFT"
             }
         ],
         "groupby": [

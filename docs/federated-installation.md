@@ -173,6 +173,7 @@ su - tungsten -c '/opt/continuent/software/tungsten-replicator-5.0.1/tools/tpm c
 ```
 
 ```bash
+su - tungsten -c '/opt/continuent/software/tungsten-replicator-5.0.1/tools/tpm update'
 su - tungsten -c '/opt/continuent/software/tungsten-replicator-5.0.1/tools/tpm update xdmodfederation'
 ```
 
