@@ -1,4 +1,6 @@
-[federated-general]
+[federated]
 
 ; The version number is updated during the upgrade process.
-version = "[:federated-general_version:]"
+version = "[:federated_version:]"
+role = "[:federated_role:]"
+huburl = "[:federated_huburl:]"
