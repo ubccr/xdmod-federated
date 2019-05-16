@@ -41,26 +41,44 @@ class FederatedSetup extends SubMenuSetupItem
     public function __construct(Console $console)
     {
         parent::__construct($console);
+        $this->genMenu();
+    }
 
+    public function genMenu(){
+        $settings = $this->loadIniConfig('portal_settings', 'federated');
+        $hubItems = array(
+            new MenuItem(
+                '2',
+                'List current instances',
+                new ListFederatedInstancesSetup($this->console, $this)
+            ),
+            new MenuItem(
+                '3',
+                'Add new instance',
+                new AddFederatedInstanceSetup($this->console, $this)
+            )
+        );
         $items = array(
             new MenuItem(
                 '1',
-                'List current instances',
-                new ListFederatedInstancesSetup($console, $this)
-            ),
-            new MenuItem(
-                '2',
-                'Add new instance',
-                new AddFederatedInstanceSetup($console, $this)
-            ),
-            new MenuItem(
-                'r',
-                'Return to main menu',
-                new SubMenuQuitSetup($console, $this)
+                'Set Federation Role',
+                new SetFederatedRole($this->console, $this)
             ),
         );
-
-        $this->menu = new Menu($items, $console, 'Federated module setup');
+        if($settings['federated_role'] === "hub"){
+            $items = array_merge($items, $hubItems);
+        }
+        $items = array_merge(
+            $items,
+            array(
+                new MenuItem(
+                    'r',
+                    'Return to main menu',
+                    new SubMenuQuitSetup($this->console, $this)
+                ),
+            )
+        );
+        $this->menu = new Menu($items, $this->console, 'Federated module setup');
     }
 
     /**
@@ -72,6 +90,7 @@ class FederatedSetup extends SubMenuSetupItem
         $this->quit = false;
 
         while (!$this->quit) {
+            $this->genMenu();
             $this->menu->display();
         }
     }
