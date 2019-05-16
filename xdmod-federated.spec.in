@@ -4,14 +4,15 @@ Release:       __RELEASE__%{?dist}
 Summary:       Federated module for Open XDMoD
 URL:           http://federated.xdmod.org/
 Vendor:        Center for Computational Research, University at Buffalo
-Packager:      Benjamin D. Plessinger <bpless@buffalo.edu>
+Packager:      XDMoD <ccr-xdmod-list@listserv.buffalo.edu>
 Group:         Applications/Internet
 License:       LGPLv3+
 Source:        %{name}-%{version}__PRERELEASE__.tar.gz
 BuildRoot:     %(mktemp -ud %{_tmppath}/%{name}-%{version}__PRERELEASE__-%{release}-XXXXXX)
 BuildArch:     noarch
 BuildRequires: php-cli
-Requires:      xdmod >= 8.1.0, xdmod < 8.5.0, ruby
+Requires:      xdmod >= 8.1.0, xdmod < 8.2.0
+Requires:      patch, ruby
 
 %description
 This package provides federated support for Open XDMoD. This module provides the
@@ -55,5 +56,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/xdmod-fed-*
 
 %changelog
-* Fri Mar 30 2018 Benjamin D. Plessinger <bpless@buffalo.edu> 8.0.0-1.0
+* Thu May 16 2019 XDMoD <ccr-xdmod-list@listserv.buffalo.edu> 8.1.2-1.0
+- Release 8.1.2
+* Fri Mar 30 2018 XDMoD <ccr-xdmod-list@listserv.buffalo.edu> 8.0.0-0.5
 - Initial Beta

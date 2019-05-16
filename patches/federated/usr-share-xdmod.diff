@@ -1,0 +1,98 @@
+diff --git a/classes/DataWarehouse/Access/Usage.php b/classes/DataWarehouse/Access/Usage.php
+index f42adbca..60b6230a 100644
+--- a/classes/DataWarehouse/Access/Usage.php
++++ b/classes/DataWarehouse/Access/Usage.php
+@@ -1248,7 +1248,10 @@ class Usage extends Common
+                 $query = "SELECT id AS value FROM modw.resourcefact WHERE code = :value";
+                 break;
+             case 'project':
+-                $query = "SELECT account_id AS value FROM modw_cloud.account WHERE display = :value";
++                /*
++                 * THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE
++                 */
++                $query = "SELECT primaryid AS value FROM modw_cloud.account WHERE display LIKE :value";
+                 break;
+         }
+ 
+@@ -1262,7 +1265,10 @@ class Usage extends Common
+             $db = DB::factory('database');
+ 
+             $stmt = $db->prepare($query);
+-            $stmt->execute(array(':value' => $value));
++            /*
++             * THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE
++             */
++            $stmt->execute(array(':value' => $value . '%'));
+ 
+             $rows = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+ 
+diff --git a/classes/DataWarehouse/Query/Cloud/GroupBys/GroupByConfiguration.php b/classes/DataWarehouse/Query/Cloud/GroupBys/GroupByConfiguration.php
+index 5715fcad..fb91c12a 100644
+--- a/classes/DataWarehouse/Query/Cloud/GroupBys/GroupByConfiguration.php
++++ b/classes/DataWarehouse/Query/Cloud/GroupBys/GroupByConfiguration.php
+@@ -33,8 +33,11 @@ class GroupByConfiguration extends \DataWarehouse\Query\Cloud\GroupBy
+         parent::__construct(
+             'configuration',
+             array(),
++            /*
++             * THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE
++             */
+             "SELECT distinct
+-                gt.id,
++                gt.primaryid,
+                 gt.instance_type as short_name,
+                 gt.display as long_name,
+                 gt.instance_type_id as order_id
+@@ -42,7 +45,10 @@ class GroupByConfiguration extends \DataWarehouse\Query\Cloud\GroupBy
+             where 1
+             order by order_id"
+         );
+-        $this->_id_field_name = 'instance_type_id';
++        /*
++         * THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE
++         */
++        $this->_id_field_name = 'primaryid';
+         $this->_long_name_field_name = 'display';
+         $this->_short_name_field_name = 'instance_type';
+         $this->_order_id_field_name = 'instance_type_id';
+@@ -121,7 +127,10 @@ class GroupByConfiguration extends \DataWarehouse\Query\Cloud\GroupBy
+     {
+         return parent::pullQueryParameterDescriptions2(
+             $request,
+-            "select long_name as field_label from modw_cloud.instance_type where id in (_filter_) order by instance_type_id"
++            /*
++             * THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE
++             */
++            "SELECT long_name AS field_label FROM modw_cloud.instance_type WHERE primaryid IN (_filter_) ORDER BY instance_type_id"
+         );
+     }
+ }
+diff --git a/classes/DataWarehouse/Query/Cloud/GroupBys/GroupByProject.php b/classes/DataWarehouse/Query/Cloud/GroupBys/GroupByProject.php
+index 1fba8e20..ccef7145 100644
+--- a/classes/DataWarehouse/Query/Cloud/GroupBys/GroupByProject.php
++++ b/classes/DataWarehouse/Query/Cloud/GroupBys/GroupByProject.php
+@@ -33,8 +33,11 @@ class GroupByProject extends \DataWarehouse\Query\Cloud\GroupBy
+         parent::__construct(
+             'project',
+             array(),
++            /*
++             * THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE
++             */
+             "SELECT distinct
+-                gt.account_id,
++                gt.primaryid,
+                 gt.display as short_name,
+                 gt.provider_account as long_name
+             FROM account gt
+@@ -42,7 +45,10 @@ class GroupByProject extends \DataWarehouse\Query\Cloud\GroupBy
+             ORDER BY gt.account_id
+         "
+         );
+-        $this->_id_field_name = 'account_id';
++        /*
++         * THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE
++         */
++        $this->_id_field_name = 'primaryid';
+         $this->_long_name_field_name = 'display';
+         $this->_short_name_field_name = 'provider_account';
+         $this->_order_id_field_name = 'display';
