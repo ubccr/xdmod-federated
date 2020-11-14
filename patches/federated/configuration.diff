@@ -143,3 +143,133 @@ index f7d4e39e..0f769bbf 100644
                  "columns": [
                      "resource_id",
                      "instance_type",
+diff --git a/configuration/etl/etl_tables.d/cloud_common/domains.json b/configuration/etl/etl_tables.d/cloud_common/domains.json
+index a8308ee9..4a19cb0a 100644
+--- a/configuration/etl/etl_tables.d/cloud_common/domains.json
++++ b/configuration/etl/etl_tables.d/cloud_common/domains.json
+@@ -10,7 +10,7 @@
+         "name": "id",
+         "type": "int(11)",
+         "nullable": false,
+-        "extra": "auto_increment",
++        "#": "Auto-increment REMOVED FROM THIS COLUMN BY THE FEDERATION",
+         "comment": "Column that will uniquely identify each row"
+       },
+       {
+@@ -24,19 +24,28 @@
+         "type": "varchar(64)",
+         "nullable": false,
+         "comment": "The human readable internal name, as received from the resource."
++      },
++      {
++        "#": "THIS HAS BEEN ADDED BY THE FEDERATION",
++        "name": "primaryid",
++        "type": "bigint(20) unsigned",
++        "nullable": false,
++        "extra": "auto_increment",
++        "comment": "Added by federation"
+       }
+     ],
+     "indexes": [
+       {
+         "name": "increment_key",
+         "columns": [
+-          "id"
++          "primaryid"
+         ],
+         "is_unique": true
+       },
+       {
+         "name": "PRIMARY",
+         "columns": [
++          "id",
+           "resource_id",
+           "name"
+         ],
+diff --git a/configuration/etl/etl_tables.d/cloud_common/instance.json b/configuration/etl/etl_tables.d/cloud_common/instance.json
+index 19c66c2e..d7f15c43 100644
+--- a/configuration/etl/etl_tables.d/cloud_common/instance.json
++++ b/configuration/etl/etl_tables.d/cloud_common/instance.json
+@@ -15,9 +15,17 @@
+                 "name": "instance_id",
+                 "type": "int(11)",
+                 "nullable": false,
+-                "extra": "auto_increment",
++                "#": "Auto-increment REMOVED FROM THIS COLUMN BY THE FEDERATION",
+                 "comment": "Auto-increment relative to resource_id. Unknown = 1"
+             },
++            {
++                "#": "THIS HAS BEEN ADDED BY THE FEDERATION",
++                "name": "primaryid",
++                "type": "bigint(20) unsigned",
++                "nullable": false,
++                "extra": "auto_increment",
++                "comment": "Added by federation"
++            },
+             {
+                 "name": "account_id",
+                 "type": "int(11)",
+@@ -55,6 +63,7 @@
+             {
+                 "name": "PRIMARY",
+                 "columns": [
++                    "instance_id",
+                     "resource_id",
+                     "provider_identifier",
+                     "service_provider"
+@@ -64,7 +73,7 @@
+             {
+                 "name": "increment_key",
+                 "columns": [
+-                    "instance_id"
++                    "primaryid"
+                 ],
+                 "is_unique": true
+             }
+diff --git a/configuration/etl/etl_tables.d/cloud_common/instance_type.json b/configuration/etl/etl_tables.d/cloud_common/instance_type.json
+index fbef1ecc..ce11bcea 100644
+--- a/configuration/etl/etl_tables.d/cloud_common/instance_type.json
++++ b/configuration/etl/etl_tables.d/cloud_common/instance_type.json
+@@ -16,8 +16,8 @@
+                 "name": "instance_type_id",
+                 "type": "int(11)",
+                 "nullable": false,
+-                "extra": "auto_increment",
+-                "comment": "Auto-increment relative to resource_id. Unknown = 1"
++                "#": "Auto-increment REMOVED FROM THIS COLUMN BY THE FEDERATION",
++                "comment": "(non fed) Auto-increment relative to resource_id. Unknown = 1"
+             },
+             {
+                 "name": "instance_type",
+@@ -69,6 +69,14 @@
+                 "nullable": true,
+                 "default": null,
+                 "comment": "End time for this configuration as a unix timestamp to the microsecond., NULL if it is still in effect."
++            },
++            {
++                "#": "THIS HAS BEEN ADDED BY THE FEDERATION",
++                "name": "primaryid",
++                "type": "bigint(20) unsigned",
++                "nullable": false,
++                "extra": "auto_increment",
++                "comment": "Added by federation"
+             }
+         ],
+
+@@ -81,6 +89,7 @@
+                 "name": "PRIMARY",
+                 "columns": [
+                     "resource_id",
++                    "instance_type_id",
+                     "instance_type",
+                     "num_cores",
+                     "memory_mb",
+@@ -91,7 +100,7 @@
+             {
+                 "name": "increment_key",
+                 "columns": [
+-                    "instance_type_id"
++                    "primaryid"
+                 ],
+                 "is_unique": true
+             }

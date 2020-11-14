@@ -16,7 +16,8 @@
             "host_id": "scef.host_id",
             "person_id": "COALESCE(upf.id, -1)",
             "systemaccount_id": "COALESCE(usa.id, -1)",
-            "submission_venue_id": "scef.submission_venue_id"
+            "submission_venue_id": "scef.submission_venue_id",
+            "domain_id": "ddf.primaryid"
         },
 
         "joins": [
@@ -44,6 +45,13 @@
                 "name": "systemaccount",
                 "alias": "usa",
                 "on": "usa.person_id = upf.id AND usa.resource_id = drf.id",
+                "type": "LEFT"
+            },
+            {
+                "schema": "${DESTINATION_SCHEMA}",
+                "name": "domains",
+                "alias": "ddf",
+                "on": "ddf.resource_id = drf.id AND ddf.id = scef.domain_id",
                 "type": "LEFT"
             }
         ],

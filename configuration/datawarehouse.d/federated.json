@@ -1,0 +1,12 @@
+{
+    "Cloud": {
+        "aggregate_schema": "modw_cloud",
+        "aggregate_table_alias": "agg",
+        "aggregate_table_prefix": "cloudfact_by_",
+        "datasource": "Cloud",
+        "group_bys": {
+            "$ref": "datawarehouse.d/ref/federated-Cloud-group-bys.json"
+        },
+        "module": "xdmod"
+    }
+}
