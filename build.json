@@ -37,7 +37,8 @@
             {"README.md": "README"}
         ],
         "etc": {
-            "configuration/":""
+            "configuration/":"",
+            "configuration/datawarehouse.d": ""
         }
     }
 }

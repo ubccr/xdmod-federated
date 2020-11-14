@@ -5,6 +5,7 @@
     }],
     "source_query": {
         "records": {
+            "id": "scdf.id",
             "resource_id": "drf.id",
             "name": "CONCAT(scdf.name, ' (', dof.abbrev, ')')"
         },
