@@ -8,21 +8,21 @@ index f2fc4bd5..de5b4f7f 100644
                  "host_resource_id": "sr.resource_id",
 -                "account_id": "instance.account_id",
 +                "#": "THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE",
-+                "account_id": "ca.primaryid",
++                "account_id": "a.primaryid",
                  "person_id": "sr.person_id",
                  "systemaccount_id": "sr.systemaccount_id",
                  "processorbucket_id": "(SELECT id FROM ${SOURCE_SCHEMA}.processor_buckets pb WHERE sr.num_cores BETWEEN pb.min_processors AND pb.max_processors)",
-@@ -71,6 +72,13 @@
-                   "schema": "${UTILITY_SCHEMA}",
-                   "alias": "task_resource",
+@@ -78,11 +79,12 @@
                    "on": "task_resource.id = sr.resource_id"
-+              },
-+              {
-+                  "#": "THE FOLLOWING IS ADDED BY THE FEDERATION MODULE",
-+                  "name":"account",
-+                  "alias":"ca",
-+                  "schema": "${SOURCE_SCHEMA}",
-+                  "on": "ca.resource_id = instance.resource_id AND ca.account_id = instance.account_id"
+               },
+               {
++                  "#": "THE FOLLOWING IS MODIFIED BY THE FEDERATION MODULE",
+                   "name": "account",
+                   "schema": "${SOURCE_SCHEMA}",
+                   "alias": "a",
+                   "type": "LEFT",
+-                  "on": "instance.account_id = a.account_id"
++                  "on": "instance.account_id = a.account_id AND a.resource_id = instance.resource_id"
                }
              ],
              "where": [
@@ -53,27 +53,31 @@ index b89f3f44..0d18fe83 100644
                  "comment": "Unknown = 1"
              },
              {
-@@ -29,9 +29,17 @@
-                 "nullable": true,
-                 "default": null,
+@@ -31,6 +31,14 @@
                  "comment": "What to show the user"
-+            },
-+            {
+             },
+             {
 +                "#": "THIS HAS BEEN ADDED BY THE FEDERATION",
 +                "name": "primaryid",
 +                "type": "bigint(20) unsigned",
 +                "nullable": false,
 +                "extra": "auto_increment",
 +                "comment": "Added by federation"
++            },
++            {
+                 "name": "principalinvestigator_person_id",
+                 "type": "int(11)",
+                 "nullable": true,
+@@ -45,6 +53,7 @@
              }
          ],
--
+
 +        "#": "THE FOLLOWING IS NOT VALID ON A FEDERATION HUB",
          "#": "Note that the primary key is (resource, account) rather than account_id so we can",
          "#": "take advantage of ON DUPLICATE KEY UPDATE to update existing entries and still use",
          "#": "auto_increment for new entries.",
-@@ -45,15 +53,16 @@
- 
+@@ -58,16 +67,17 @@
+
          "indexes": [
              {
 +                "#": "THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE",
@@ -87,11 +91,12 @@ index b89f3f44..0d18fe83 100644
              },
              {
 -                "name": "autoincrement_key",
-+                "#": "THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE",
 +                "name": "uniq",
                  "columns": [
-                     "resource_id",
++                    "resource_id",
                      "account_id"
+                 ],
+                 "is_unique": true
 diff --git a/configuration/etl/etl_tables.d/cloud_common/instance_type.json b/configuration/etl/etl_tables.d/cloud_common/instance_type.json
 index f7d4e39e..0f769bbf 100644
 --- a/configuration/etl/etl_tables.d/cloud_common/instance_type.json
@@ -120,29 +125,151 @@ index f7d4e39e..0f769bbf 100644
 +                "comment": "Added by federation"
 +             }
          ],
- 
+
          "#": "Note that the primary key is (resource, instance_type, num_cores, memory_mb, disk_gb)",
-@@ -78,7 +86,14 @@
- 
+@@ -79,6 +87,15 @@
          "indexes": [
              {
--                "name": "PRIMARY",
+                 "name": "PRIMARY",
 +                "#": "THE FOLLOWING HAS BEEN ADDED BY THE FEDERATION MODULE",
 +                "name": "PRIMARY",
 +                "columns": [
 +                    "primaryid"
 +                ]
-+            },{
++            },
++            {
 +                "#": "THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE",
 +                "name": "uniq",
                  "columns": [
                      "resource_id",
                      "instance_type",
-@@ -89,6 +104,7 @@
+diff --git a/configuration/etl/etl_tables.d/cloud_common/domains.json b/configuration/etl/etl_tables.d/cloud_common/domains.json
+index a8308ee9..4a19cb0a 100644
+--- a/configuration/etl/etl_tables.d/cloud_common/domains.json
++++ b/configuration/etl/etl_tables.d/cloud_common/domains.json
+@@ -10,7 +10,7 @@
+         "name": "id",
+         "type": "int(11)",
+         "nullable": false,
+-        "extra": "auto_increment",
++        "#": "Auto-increment REMOVED FROM THIS COLUMN BY THE FEDERATION",
+         "comment": "Column that will uniquely identify each row"
+       },
+       {
+@@ -24,19 +24,28 @@
+         "type": "varchar(64)",
+         "nullable": false,
+         "comment": "The human readable internal name, as received from the resource."
++      },
++      {
++        "#": "THIS HAS BEEN ADDED BY THE FEDERATION",
++        "name": "primaryid",
++        "type": "bigint(20) unsigned",
++        "nullable": false,
++        "extra": "auto_increment",
++        "comment": "Added by federation"
+       }
+     ],
+     "indexes": [
+       {
+         "name": "increment_key",
+         "columns": [
+-          "id"
++          "primaryid"
+         ],
+         "is_unique": true
+       },
+       {
+         "name": "PRIMARY",
+         "columns": [
++          "id",
+           "resource_id",
+           "name"
+         ],
+diff --git a/configuration/etl/etl_tables.d/cloud_common/instance.json b/configuration/etl/etl_tables.d/cloud_common/instance.json
+index 19c66c2e..d7f15c43 100644
+--- a/configuration/etl/etl_tables.d/cloud_common/instance.json
++++ b/configuration/etl/etl_tables.d/cloud_common/instance.json
+@@ -15,9 +15,17 @@
+                 "name": "instance_id",
+                 "type": "int(11)",
+                 "nullable": false,
+-                "extra": "auto_increment",
++                "#": "Auto-increment REMOVED FROM THIS COLUMN BY THE FEDERATION",
+                 "comment": "Auto-increment relative to resource_id. Unknown = 1"
+             },
++            {
++                "#": "THIS HAS BEEN ADDED BY THE FEDERATION",
++                "name": "primaryid",
++                "type": "bigint(20) unsigned",
++                "nullable": false,
++                "extra": "auto_increment",
++                "comment": "Added by federation"
++            },
+             {
+                 "name": "account_id",
+                 "type": "int(11)",
+@@ -55,6 +63,7 @@
+             {
+                 "name": "PRIMARY",
+                 "columns": [
++                    "instance_id",
+                     "resource_id",
+                     "provider_identifier",
+                     "service_provider"
+@@ -64,7 +73,7 @@
+             {
+                 "name": "increment_key",
+                 "columns": [
+-                    "instance_id"
++                    "primaryid"
+                 ],
                  "is_unique": true
+             }
+diff --git a/configuration/etl/etl_tables.d/cloud_common/instance_type.json b/configuration/etl/etl_tables.d/cloud_common/instance_type.json
+index fbef1ecc..ce11bcea 100644
+--- a/configuration/etl/etl_tables.d/cloud_common/instance_type.json
++++ b/configuration/etl/etl_tables.d/cloud_common/instance_type.json
+@@ -16,8 +16,8 @@
+                 "name": "instance_type_id",
+                 "type": "int(11)",
+                 "nullable": false,
+-                "extra": "auto_increment",
+-                "comment": "Auto-increment relative to resource_id. Unknown = 1"
++                "#": "Auto-increment REMOVED FROM THIS COLUMN BY THE FEDERATION",
++                "comment": "(non fed) Auto-increment relative to resource_id. Unknown = 1"
              },
              {
-+                "#": "THE FOLLOWING IS NOT VALID ON A FEDERATION HUB",
-                 "#": "For MyISAM tables, you can specify AUTO_INCREMENT on a secondary column in a",
-                 "#": "multiple-column index. In this case, the generated value for the AUTO_INCREMENT column",
-                 "#": "is calculated as MAX(auto_increment_column) + 1 WHERE prefix=given-prefix. This is",
+                 "name": "instance_type",
+@@ -69,6 +69,14 @@
+                 "nullable": true,
+                 "default": null,
+                 "comment": "End time for this configuration as a unix timestamp to the microsecond., NULL if it is still in effect."
++            },
++            {
++                "#": "THIS HAS BEEN ADDED BY THE FEDERATION",
++                "name": "primaryid",
++                "type": "bigint(20) unsigned",
++                "nullable": false,
++                "extra": "auto_increment",
++                "comment": "Added by federation"
+             }
+         ],
+
+@@ -81,6 +89,7 @@
+                 "name": "PRIMARY",
+                 "columns": [
+                     "resource_id",
++                    "instance_type_id",
+                     "instance_type",
+                     "num_cores",
+                     "memory_mb",
+@@ -91,7 +100,7 @@
+             {
+                 "name": "increment_key",
+                 "columns": [
+-                    "instance_type_id"
++                    "primaryid"
+                 ],
+                 "is_unique": true
+             }

@@ -40,6 +40,12 @@
             "truncate_destination": false
         },
         {
+            "name": "domains",
+            "definition_file": "federated/cloud/domains.json",
+            "description": "Cloud Instance *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
             "name": "account",
             "definition_file": "federated/cloud/account.json",
             "description": "Cloud Instance *requires: -d instance_name*",

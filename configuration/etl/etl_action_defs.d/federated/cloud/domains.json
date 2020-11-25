@@ -1,0 +1,37 @@
+{
+    "#name": "fed.ingest-cloud.domains",
+    "table_definition": [{
+        "$ref": "${table_definition_dir}/cloud_common/domains.json#/table_definition"
+    }],
+    "source_query": {
+        "records": {
+            "id": "scdf.id",
+            "resource_id": "drf.id",
+            "name": "CONCAT(scdf.name, ' (', dof.abbrev, ')')"
+        },
+        "joins": [
+            {
+                "name": "domains",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "scdf"
+            },
+            {
+                "name": "resourcefact",
+                "schema": "${UTILITY_SCHEMA}",
+                "alias": "drf",
+                "on": "drf.organization_id = (SELECT id FROM ${UTILITY_SCHEMA}.organization WHERE federation_instance_id = ${instance_id}) AND drf.resource_origin_id = scdf.resource_id"
+            },
+            {
+                "schema": "${UTILITY_SCHEMA}",
+                "name": "organization",
+                "alias": "dof",
+                "on": "dof.id = drf.organization_id"
+            }
+        ],
+        "macros": [
+            {
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
+            }
+        ]
+    }
+}

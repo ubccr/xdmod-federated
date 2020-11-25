@@ -14,9 +14,10 @@
             "event_type_id": "scef.event_type_id",
             "record_type_id": "scef.record_type_id",
             "host_id": "scef.host_id",
-            "person_id": "upf.id",
-            "systemaccount_id": "usa.id",
-            "submission_venue_id": "scef.submission_venue_id"
+            "person_id": "COALESCE(upf.id, -1)",
+            "systemaccount_id": "COALESCE(usa.id, -1)",
+            "submission_venue_id": "scef.submission_venue_id",
+            "domain_id": "ddf.primaryid"
         },
 
         "joins": [
@@ -29,19 +30,29 @@
                 "name": "resourcefact",
                 "schema": "${UTILITY_SCHEMA}",
                 "alias": "drf",
-                "on": "drf.organization_id = (SELECT id FROM ${UTILITY_SCHEMA}.organization WHERE federation_instance_id = ${instance_id}) AND drf.resource_origin_id = scef.resource_id"
+                "on": "drf.organization_id = (SELECT id FROM ${UTILITY_SCHEMA}.organization WHERE federation_instance_id = ${instance_id}) AND drf.resource_origin_id = scef.resource_id",
+                "type": "LEFT"
             },
             {
                 "schema": "${UTILITY_SCHEMA}",
                 "name": "person",
                 "alias": "upf",
-                "on": "upf.person_origin_id = scef.person_id AND upf.organization_id = drf.organization_id"
+                "on": "upf.person_origin_id = scef.person_id AND upf.organization_id = drf.organization_id",
+                "type": "LEFT"
             },
             {
                 "schema": "${UTILITY_SCHEMA}",
                 "name": "systemaccount",
                 "alias": "usa",
-                "on": "usa.person_id = upf.id and usa.resource_id = drf.id"
+                "on": "usa.person_id = upf.id AND usa.resource_id = drf.id",
+                "type": "LEFT"
+            },
+            {
+                "schema": "${DESTINATION_SCHEMA}",
+                "name": "domains",
+                "alias": "ddf",
+                "on": "ddf.resource_id = drf.id AND ddf.id = scef.domain_id",
+                "type": "LEFT"
             }
         ],
         "macros": [
