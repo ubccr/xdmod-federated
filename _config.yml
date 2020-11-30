@@ -16,27 +16,41 @@
 title: Open XDMoD Federated Module
 email: ccr-xdmod-help@buffalo.edu
 description: >
-  An available Open XDMoD enhancement is Federated. This module provides the
-  ability to have multiple disparate Open XDMoD installations replicate raw data
-  to a core server to provide an overview of all systems.
+  An Open XDMoD enhancement: Federated. This module provides the
+  ability to have multiple disparate Open XDMoD instances replicate data
+  to an Open XDMoD huu to provide an overview of all systems.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://federated.xdmod.org" # the base hostname & protocol for your site
 github_username: ubccr
 github_url: https://github.com/ubccr/xdmod-federated
 xdmod_module_name: Federated
-latest_version: "8.0"
+latest_version: "9.0"
 version_list:
+    - "9.0"
     - "8.0"
 
 defaults:
-    -
-        scope:
-            path: "8.0"
-            type: "pages"
-        values:
-            layout: "page"
-            version: "8.0"
-            menu_markdown: "8.0/menu.md"
+  -
+    scope:
+      path: "9.0"
+      type: "pages"
+    values:
+      layout: "page"
+      version: "9.0"
+      prev_sw_version: "8.0"
+      sw_version: "9.0.0"
+      style: "effervescence"
+      tocversion: "v9_0toc"
+  -
+    scope:
+      path: "8.0"
+      type: "pages"
+    values:
+      layout: "page"
+      version: "8.0"
+      sw_version: "8.0.0"
+      style: "effervescence"
+      tocversion: "v8_0toc"
 
 # Build settings
 markdown: kramdown
@@ -45,3 +59,4 @@ gems:
   - jekyll-redirect-from
 whitelist:
   - jekyll-redirect-from
+

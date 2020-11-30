@@ -1,3 +1,3 @@
 ---
-redirect_to: /8.0/federated-glossary.html
+redirect_to: /9.0/federated-glossary.html
 ---
