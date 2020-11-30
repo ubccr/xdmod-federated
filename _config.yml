@@ -27,7 +27,7 @@ xdmod_module_name: Federated
 latest_version: "9.0"
 version_list:
     - "9.0"
-    - "8.0"
+    - "8.1"
 
 defaults:
   -
@@ -37,20 +37,20 @@ defaults:
     values:
       layout: "page"
       version: "9.0"
-      prev_sw_version: "8.0"
+      prev_sw_version: "8.1"
       sw_version: "9.0.0"
       style: "effervescence"
       tocversion: "v9_0toc"
   -
     scope:
-      path: "8.0"
+      path: "8.1"
       type: "pages"
     values:
       layout: "page"
-      version: "8.0"
-      sw_version: "8.0.0"
+      version: "8.1"
+      sw_version: "8.1.2"
       style: "effervescence"
-      tocversion: "v8_0toc"
+      tocversion: "v8_1toc"
 
 # Build settings
 markdown: kramdown
@@ -59,4 +59,3 @@ gems:
   - jekyll-redirect-from
 whitelist:
   - jekyll-redirect-from
-

@@ -1,0 +1,19 @@
+toc:
+  - title: About
+    subfolderitems:
+      - page: Overview
+        url: /9.0/federated-overview.html
+      - page: Glossary
+        url: /9.0/federated-glossary.html
+  - title: Downloads
+    subfolderitems:
+      - page: Federated Module
+        url: https://github.com/ubccr/xdmod-federated/releases/tag/v9.0.0
+  - title: Install
+    subfolderitems:
+      - page: Module Setup
+        url: /9.0/federated-installation.html
+  - title: Use
+    subfolderitems:
+      - page: Useful Commands
+        url: /9.0/federated-useful-commands.html
