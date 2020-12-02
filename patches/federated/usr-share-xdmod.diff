@@ -1,5 +1,5 @@
 diff --git a/classes/DataWarehouse/Access/Usage.php b/classes/DataWarehouse/Access/Usage.php
-index df843d73..66566b6e 100644
+index df843d7..841641c 100644
 --- a/classes/DataWarehouse/Access/Usage.php
 +++ b/classes/DataWarehouse/Access/Usage.php
 @@ -1266,6 +1266,12 @@ class Usage extends Common
@@ -8,24 +8,24 @@ index df843d73..66566b6e 100644
                  break;
 +            case 'project':
 +                /*
-+                * THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE
-+                */
++                 * THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE
++                 */
 +                $query = "SELECT primaryid AS value FROM modw_cloud.account WHERE display LIKE :value";
 +                break;
          }
 
          $filterValueIsString = preg_match('/^[\'"].*[\'"]$/', $usageFilterValue) === 1;
-@@ -1278,7 +1284,10 @@ class Usage extends Common
+@@ -1275,6 +1281,10 @@ class Usage extends Common
+         if ($query !== null && $filterValueIsString) {
+             $value = trim($usageFilterValue, '\'"');
+
++            if ($usageFilterType === 'project') {
++                $value += "%";
++            }
++
              $db = DB::factory('database');
 
              $stmt = $db->prepare($query);
--            $stmt->execute(array(':value' => $value));
-+            /*
-+             * THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE
-+             */
-+            $stmt->execute(array(':value' => $value . '%'));
-
-             $rows = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 
 diff --git a/classes/OpenXdmod/DataWarehouseInitializer.php b/classes/OpenXdmod/DataWarehouseInitializer.php
 index e282f658..24780ff1 100644
