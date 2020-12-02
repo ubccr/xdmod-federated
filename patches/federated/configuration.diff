@@ -273,3 +273,22 @@ index fbef1ecc..ce11bcea 100644
                  ],
                  "is_unique": true
              }
+diff --git a/configuration/datawarehouse.d/ref/Cloud-group-bys.json b/configuration/datawarehouse.d/ref/Cloud-group-bys.json
+index 5be8d75..850d199 100644
+--- a/configuration/datawarehouse.d/ref/Cloud-group-bys.json
++++ b/configuration/datawarehouse.d/ref/Cloud-group-bys.json
+@@ -117,12 +117,12 @@
+            "display"
+        ],
+        "attribute_filter_map_query": {
+-            "account_id": "SELECT account_id FROM modw_cloud.account WHERE display in (__filter_values__)"
++            "account_id": "SELECT primaryid FROM modw_cloud.account WHERE display in (__filter_values__)"
+        },
+        "attribute_description_query": "SELECT DISTINCT display AS filter_name FROM modw_cloud.account WHERE display IN (__filter_values__) ORDER BY display",
+        "attribute_to_aggregate_table_key_map": [
+            {
+-                "account_id": "account_id"
++                "primaryid": "account_id"
+            }
+        ],
+        "attribute_values_query": {
