@@ -97,52 +97,6 @@ index b89f3f44..0d18fe83 100644
                      "account_id"
                  ],
                  "is_unique": true
-diff --git a/configuration/etl/etl_tables.d/cloud_common/instance_type.json b/configuration/etl/etl_tables.d/cloud_common/instance_type.json
-index f7d4e39e..0f769bbf 100644
---- a/configuration/etl/etl_tables.d/cloud_common/instance_type.json
-+++ b/configuration/etl/etl_tables.d/cloud_common/instance_type.json
-@@ -16,7 +16,7 @@
-                 "name": "instance_type_id",
-                 "type": "int(11)",
-                 "nullable": false,
--                "extra": "auto_increment",
-+                "#": "Auto-increment REMOVED FROM THIS COLUMN BY THE FEDERATION",
-                 "comment": "Auto-increment relative to resource_id. Unknown = 1"
-             },
-             {
-@@ -69,7 +69,15 @@
-                 "nullable": true,
-                 "default": null,
-                 "comment": "End time for this configuration as a unix timestamp to the microsecond., NULL if it is still in effect."
--            }
-+            },
-+            {
-+                "#": "THIS HAS BEEN ADDED BY THE FEDERATION",
-+                "name": "primaryid",
-+                "type": "bigint(20) unsigned",
-+                "nullable": false,
-+                "extra": "auto_increment",
-+                "comment": "Added by federation"
-+             }
-         ],
-
-         "#": "Note that the primary key is (resource, instance_type, num_cores, memory_mb, disk_gb)",
-@@ -79,6 +87,15 @@
-         "indexes": [
-             {
-                 "name": "PRIMARY",
-+                "#": "THE FOLLOWING HAS BEEN ADDED BY THE FEDERATION MODULE",
-+                "name": "PRIMARY",
-+                "columns": [
-+                    "primaryid"
-+                ]
-+            },
-+            {
-+                "#": "THE FOLLOWING HAS BEEN CHANGED BY THE FEDERATION MODULE",
-+                "name": "uniq",
-                 "columns": [
-                     "resource_id",
-                     "instance_type",
 diff --git a/configuration/etl/etl_tables.d/cloud_common/domains.json b/configuration/etl/etl_tables.d/cloud_common/domains.json
 index a8308ee9..4a19cb0a 100644
 --- a/configuration/etl/etl_tables.d/cloud_common/domains.json
@@ -227,7 +181,7 @@ index 19c66c2e..d7f15c43 100644
                  "is_unique": true
              }
 diff --git a/configuration/etl/etl_tables.d/cloud_common/instance_type.json b/configuration/etl/etl_tables.d/cloud_common/instance_type.json
-index fbef1ecc..ce11bcea 100644
+index fbef1ecc..5d9c4874 100644
 --- a/configuration/etl/etl_tables.d/cloud_common/instance_type.json
 +++ b/configuration/etl/etl_tables.d/cloud_common/instance_type.json
 @@ -16,8 +16,8 @@
@@ -256,39 +210,48 @@ index fbef1ecc..ce11bcea 100644
              }
          ],
 
-@@ -81,6 +89,7 @@
+@@ -79,6 +87,14 @@
+         "indexes": [
+             {
                  "name": "PRIMARY",
++                "#": "THE FOLLOWING HAS BEEN ADDED BY THE FEDERATION MODULE",
++                "columns": [
++                    "primaryid"
++                ],
++                "is_unique": true
++            },
++            {
++                "name": "uniq",
                  "columns": [
                      "resource_id",
-+                    "instance_type_id",
                      "instance_type",
-                     "num_cores",
-                     "memory_mb",
-@@ -91,7 +100,7 @@
+@@ -89,8 +105,10 @@
+                 "is_unique": true
+             },
              {
++                "#": "THE FOLLOWING HAS BEEN MODIFIED BY THE FEDERATION MODULE",
                  "name": "increment_key",
                  "columns": [
--                    "instance_type_id"
-+                    "primaryid"
++                    "resource_id",
+                     "instance_type_id"
                  ],
                  "is_unique": true
-             }
 diff --git a/configuration/datawarehouse.d/ref/Cloud-group-bys.json b/configuration/datawarehouse.d/ref/Cloud-group-bys.json
-index 5be8d75..850d199 100644
+index 5be8d75b..850d1990 100644
 --- a/configuration/datawarehouse.d/ref/Cloud-group-bys.json
 +++ b/configuration/datawarehouse.d/ref/Cloud-group-bys.json
 @@ -117,12 +117,12 @@
-            "display"
-        ],
-        "attribute_filter_map_query": {
+             "display"
+         ],
+         "attribute_filter_map_query": {
 -            "account_id": "SELECT account_id FROM modw_cloud.account WHERE display in (__filter_values__)"
 +            "account_id": "SELECT primaryid FROM modw_cloud.account WHERE display in (__filter_values__)"
-        },
-        "attribute_description_query": "SELECT DISTINCT display AS filter_name FROM modw_cloud.account WHERE display IN (__filter_values__) ORDER BY display",
-        "attribute_to_aggregate_table_key_map": [
-            {
+         },
+         "attribute_description_query": "SELECT DISTINCT display AS filter_name FROM modw_cloud.account WHERE display IN (__filter_values__) ORDER BY display",
+         "attribute_to_aggregate_table_key_map": [
+             {
 -                "account_id": "account_id"
 +                "primaryid": "account_id"
-            }
-        ],
-        "attribute_values_query": {
+             }
+         ],
+         "attribute_values_query": {
