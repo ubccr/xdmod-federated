@@ -2,7 +2,6 @@
 title: federated Overview
 redirect_from:
     - "/8.0/"
-    - ""
 ---
 
 An available Open XDMoD enhancement is Federated. This module provides the
