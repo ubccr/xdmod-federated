@@ -20,7 +20,7 @@ index df843d7..841641c 100644
              $value = trim($usageFilterValue, '\'"');
 
 +            if ($usageFilterType === 'project') {
-+                $value += "%";
++                $value .= "%";
 +            }
 +
              $db = DB::factory('database');
