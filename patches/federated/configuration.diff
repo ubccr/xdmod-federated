@@ -237,17 +237,70 @@ index fbef1ecc..5d9c4874 100644
                  ],
                  "is_unique": true
 diff --git a/configuration/datawarehouse.d/ref/Cloud-group-bys.json b/configuration/datawarehouse.d/ref/Cloud-group-bys.json
-index 5be8d75b..850d1990 100644
+index 5be8d75b..d6b88191 100644
 --- a/configuration/datawarehouse.d/ref/Cloud-group-bys.json
 +++ b/configuration/datawarehouse.d/ref/Cloud-group-bys.json
-@@ -117,12 +117,12 @@
-             "display"
+@@ -8,13 +8,13 @@
          ],
-         "attribute_filter_map_query": {
--            "account_id": "SELECT account_id FROM modw_cloud.account WHERE display in (__filter_values__)"
-+            "account_id": "SELECT primaryid FROM modw_cloud.account WHERE display in (__filter_values__)"
+         "attribute_to_aggregate_table_key_map": [
+             {
+-                "instance_type_id": "instance_type_id"
++                "primaryid": "instance_type_id"
+             }
+         ],
+         "order": 6,
+         "attribute_values_query": {
+             "records": {
+-                "id": "display",
++                "id": "primaryid",
+                 "short_name": "display",
+                 "name": "display",
+                 "order_id": "display"
+@@ -30,7 +30,7 @@
+             "query_hint": "DISTINCT"
          },
-         "attribute_description_query": "SELECT DISTINCT display AS filter_name FROM modw_cloud.account WHERE display IN (__filter_values__) ORDER BY display",
+         "attribute_filter_map_query": {
+-            "instance_type_id": "SELECT instance_type_id FROM modw_cloud.instance_type WHERE display IN (__filter_values__)"
++            "instance_type_id": "SELECT primaryid FROM modw_cloud.instance_type WHERE display IN (__filter_values__)"
+         },
+         "attribute_description_query": "SELECT DISTINCT display AS filter_name FROM modw_cloud.instance_type WHERE display IN (__filter_values__) ORDER BY display"
+     },
+@@ -39,7 +39,7 @@
+             "name"
+         ],
+         "attribute_filter_map_query":{
+-            "domain_id": "SELECT id FROM modw_cloud.domains WHERE name IN (__filter_values__)"
++            "domain_id": "SELECT primayid FROM modw_cloud.domains WHERE name IN (__filter_values__)"
+         },
+         "attribute_description_query": "SELECT DISTINCT name AS filter_name FROM modw_cloud.domains WHERE name IN (__filter_values__) ORDER BY name",
+         "name": "Domain",
+@@ -54,12 +54,12 @@
+         "attribute_table_schema": "modw_cloud",
+         "attribute_to_aggregate_table_key_map": [
+             {
+-                "id": "domain_id"
++                "primaryid": "domain_id"
+             }
+         ],
+         "attribute_values_query": {
+             "records": {
+-                "id": "name",
++                "id": "primaryid",
+                 "short_name": "name",
+                 "name": "name",
+                 "order_id": "name"
+@@ -113,16 +113,10 @@
+     },
+     "project": {
+         "attribute_table_schema": "modw_cloud",
+-        "alternate_group_by_columns": [
+-            "display"
+-        ],
+-        "attribute_filter_map_query": {
+-            "account_id": "SELECT account_id FROM modw_cloud.account WHERE display in (__filter_values__)"
+-        },
+-        "attribute_description_query": "SELECT DISTINCT display AS filter_name FROM modw_cloud.account WHERE display IN (__filter_values__) ORDER BY display",
++        "attribute_description_query": "SELECT DISTINCT display AS filter_name FROM modw_cloud.account WHERE primaryid IN (__filter_values__) ORDER BY display",
          "attribute_to_aggregate_table_key_map": [
              {
 -                "account_id": "account_id"
@@ -255,3 +308,12 @@ index 5be8d75b..850d1990 100644
              }
          ],
          "attribute_values_query": {
+@@ -135,7 +129,7 @@
+                 "display"
+             ],
+             "records": {
+-                "id": "display",
++                "id": "primaryid",
+                 "name": "display",
+                 "order_id": "display",
+                 "short_name": "display"
