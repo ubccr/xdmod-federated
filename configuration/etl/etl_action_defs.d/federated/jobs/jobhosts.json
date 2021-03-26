@@ -11,14 +11,19 @@
         "joins": [
             {
                 "schema": "${SOURCE_SCHEMA}",
+                "name": "job_tasks_staging",
+                "alias": "jt"
+            },
+            {
+                "schema": "${SOURCE_SCHEMA}",
                 "name": "jobhosts",
-                "alias": "sjh"
+                "alias": "jt.job_id = sjh.job_id"
             },
             {
                 "schema": "${SOURCE_SCHEMA}",
                 "name": "hosts",
                 "alias": "sh",
-                "on": "sjh.host_id = id"
+                "on": "sjh.host_id = sh.id"
             },
             {
                 "schema": "${SOURCE_SCHEMA}",
