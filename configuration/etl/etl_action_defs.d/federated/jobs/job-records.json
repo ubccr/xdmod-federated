@@ -4,7 +4,7 @@
     },
     "source_query": {
         "records": {
-            "job_record_origin_id": "job_record_id",
+            "job_record_origin_id": "jr.job_record_id",
             "resource_id": "rf.id",
             "resourcetype_id": "jr.resourcetype_id",
             "request_id": "alf.request_id",
@@ -34,7 +34,7 @@
         },
         "joins": [
             {
-                "name": "job_records",
+                "name": "job_records_staging",
                 "schema": "${SOURCE_SCHEMA}",
                 "alias": "jr"
             },
