@@ -89,18 +89,21 @@
             "name": "instance-job-record",
             "definition_file": "federated/jobs/job-records.json",
             "description": "Job records *requires: -d instance_name*",
+            "analyze_table": false,
             "truncate_destination": false
         },
         {
             "name": "instance-job-task",
             "definition_file": "federated/jobs/job-tasks.json",
             "description": "Job tasks *requires: -d instance_name*",
+            "analyze_table": false,
             "truncate_destination": false
         },
         {
             "name": "instance-jobhosts",
             "definition_file": "federated/jobs/jobhosts.json",
             "description": "Job Hosts *requires: -d instance_name*",
+            "analyze_table": false,
             "truncate_destination": false
         },
         {
