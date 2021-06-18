@@ -1,6 +1,6 @@
 {
     "name": "xdmod-federated",
-    "version": "9.0.0",
+    "version": "9.5.0",
     "release": "0.1",
     "files": {
         "include_paths": [
