@@ -17,7 +17,8 @@
             {
                 "schema": "${SOURCE_SCHEMA}",
                 "name": "jobhosts",
-                "alias": "jt.job_id = sjh.job_id"
+                "alias": "sjh",
+                "on": "jt.job_id = sjh.job_id"
             },
             {
                 "schema": "${SOURCE_SCHEMA}",
