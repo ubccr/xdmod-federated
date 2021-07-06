@@ -1,0 +1,63 @@
+{
+    "table_definition": {
+        "$ref": "${table_definition_dir}/jobs/xdw/job-tasks.json#/table_definition"
+    },
+    "source_query": {
+        "records": {
+            "job_record_id": "jt.job_record_id",
+            "job_id": "jt.job_id",
+            "job_id_origin_id": "jt.job_id_origin_id",
+            "creation_time": "jt.creation_time",
+            "local_jobid": "jt.local_jobid",
+            "local_job_array_index": "jt.local_job_array_index",
+            "local_job_id_raw": "jt.local_job_id_raw",
+            "resource_id": "jt.resource_id",
+            "systemaccount_id": "jt.systemaccount_id",
+            "person_id": "jt.person_id",
+            "person_organization_id": "jt.person_organization_id",
+            "person_nsfstatuscode_id": "jt.person_nsfstatuscode_id",
+            "job_task_type_id": "jt.job_task_type_id",
+            "name": "jt.name",
+            "submit_time_ts": "jt.submit_time_ts",
+            "start_time_ts": "jt.start_time_ts",
+            "end_time_ts": "jt.end_time_ts",
+            "eligible_time_ts": "jt.eligible_time_ts",
+            "start_day_id": "jt.start_day_id",
+            "end_day_id": "jt.end_day_id",
+            "eligible_day_id": "jt.eligible_day_id",
+            "node_count": "jt.node_count",
+            "processor_count": "jt.processor_count",
+            "gpu_count": "jt.gpu_count",
+            "memory_kb": "jt.memory_kb",
+            "wallduration": "jt.wallduration",
+            "waitduration": "jt.waitduration",
+            "cpu_time": "jt.cpu_time",
+            "gpu_time": "jt.gpu_time",
+            "local_charge_su": "jt.local_charge_su",
+            "adjusted_charge_su": "jt.adjusted_charge_su",
+            "local_charge_xdsu": "jt.local_charge_xdsu",
+            "adjusted_charge_xdsu": "jt.adjusted_charge_xdsu",
+            "local_charge_nu": "jt.local_charge_nu",
+            "adjusted_charge_nu": "jt.adjusted_charge_nu",
+            "group_name": "jt.group_name",
+            "gid_number": "jt.gid_number",
+            "uid_number": "jt.uid_number",
+            "exit_code": "jt.exit_code",
+            "exit_state": "jt.exit_state",
+            "cpu_req": "jt.cpu_req",
+            "mem_req": "jt.mem_req",
+            "timelimit": "jt.timelimit",
+            "coversion_factor": "jt.conversion_factor",
+            "completed": "jt.completed",
+            "last_modified": "jt.last_modified",
+            "is_deleted": "jt.is_deleted"
+        },
+        "joins": [
+            {
+                "name": "job_tasks_staging",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "jt"
+            }
+        ]
+    }
+}
