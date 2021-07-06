@@ -87,19 +87,19 @@
         },
         {
             "name": "instance-job-record",
-            "definition_file": "federated/jobs/job-records.json",
+            "definition_file": "federated/jobs/job-records-historical.json",
             "description": "Job records *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
             "name": "instance-job-task",
-            "definition_file": "federated/jobs/job-tasks.json",
+            "definition_file": "federated/jobs/job-tasks-historical.json",
             "description": "Job tasks *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
             "name": "instance-jobhosts",
-            "definition_file": "federated/jobs/jobhosts.json",
+            "definition_file": "federated/jobs/jobhosts-historical.json",
             "description": "Job Hosts *requires: -d instance_name*",
             "truncate_destination": false
         },
@@ -107,36 +107,6 @@
             "name": "instance-pi",
             "definition_file": "federated/jobs/principal-investigator.json",
             "description": "pi *requires: -d instance_name*",
-            "truncate_destination": false
-        },
-        {
-            "name": "instance-job-task-spoke",
-            "definition_file": "federated/jobs/job-tasks-spoke.json",
-            "description": "Job tasks *requires: -d instance_name*",
-            "endpoints": {
-                "destination": {
-                    "type": "mysql",
-                    "name": "cloud instance destination",
-                    "config": "datawarehouse",
-                    "schema": "${instance_name}-modw",
-                    "create_schema_if_not_exists": true
-                }
-            },
-            "truncate_destination": false
-        },
-        {
-            "name": "instance-job-records-spoke",
-            "definition_file": "federated/jobs/job-records-spoke.json",
-            "description": "Job tasks *requires: -d instance_name*",
-            "endpoints": {
-                "destination": {
-                    "type": "mysql",
-                    "name": "cloud instance destination",
-                    "config": "datawarehouse",
-                    "schema": "${instance_name}-modw",
-                    "create_schema_if_not_exists": true
-                }
-            },
             "truncate_destination": false
         }
     ]
