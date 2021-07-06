@@ -74,6 +74,12 @@
             "options_class": "IngestorOptions",
             "enabled": true
         },
+        "ingest-historical": {
+            "class": "DatabaseIngestor",
+            "namespace": "ETL\\Ingestor",
+            "options_class": "IngestorOptions",
+            "enabled": true
+        },
         "ingest-cloud": {
             "endpoints": {
                 "destination": {
@@ -105,6 +111,9 @@
     },
     "ingest": {
         "$ref": "etl_pipelines.d/federated.json#/ingest"
+    },
+    "ingest-historical": {
+        "$ref": "etl_pipelines.d/federated-historical.json#/ingest"
     },
     "ingest-cloud": {
         "$ref": "etl_pipelines.d/federated-cloud.json#/ingest"

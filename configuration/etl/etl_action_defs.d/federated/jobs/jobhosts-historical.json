@@ -1,0 +1,70 @@
+{
+    "table_definition": {
+        "$ref": "${table_definition_dir}/jobs/xdw/jobhosts.json#/table_definition"
+    },
+    "source_query": {
+        "overseer_restrictions": {
+            "last_modified_start_date": "jt.last_modified >= ${VALUE}",
+            "last_modified_end_date": "jt.last_modified <= ${VALUE}"
+        },
+        "records": {
+            "job_id": "djt.job_id",
+            "host_id": "dh.id",
+            "order_id": "sjh.order_id"
+        },
+        "joins": [
+            {
+                "schema": "${SOURCE_SCHEMA}",
+                "name": "job_tasks",
+                "alias": "jt"
+            },
+            {
+                "schema": "${SOURCE_SCHEMA}",
+                "name": "jobhosts",
+                "alias": "sjh",
+                "on": "jt.job_id = sjh.job_id"
+            },
+            {
+                "schema": "${SOURCE_SCHEMA}",
+                "name": "hosts",
+                "alias": "sh",
+                "on": "sjh.host_id = sh.id"
+            },
+            {
+                "schema": "${SOURCE_SCHEMA}",
+                "name": "resourcefact",
+                "alias": "sr",
+                "on": "sh.resource_id = sr.id"
+            },
+            {
+                "schema": "${DESTINATION_SCHEMA}",
+                "name": "organization",
+                "alias": "do",
+                "on": "do.organization_origin_id = sr.organization_id AND federation_instance_id = ${instance_id}"
+            },
+            {
+                "schema": "${DESTINATION_SCHEMA}",
+                "name": "resourcefact",
+                "alias": "drf",
+                "on": "drf.organization_id = do.id and drf.resource_origin_id = sh.resource_id"
+            },
+            {
+                "schema": "${DESTINATION_SCHEMA}",
+                "name": "job_tasks",
+                "alias": "djt",
+                "on": "djt.job_id_origin_id = sjh.job_id AND djt.resource_id = drf.id"
+            },
+            {
+                "schema": "${DESTINATION_SCHEMA}",
+                "name": "hosts",
+                "alias": "dh",
+                "on": "dh.resource_id = drf.id AND sh.id = dh.host_origin_id"
+            }
+        ],
+        "macros": [
+            {
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
+            }
+        ]
+    }
+}

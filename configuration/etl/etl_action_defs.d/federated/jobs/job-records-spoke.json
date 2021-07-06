@@ -1,0 +1,53 @@
+{
+    "table_definition": {
+        "$ref": "${table_definition_dir}/jobs/xdw/job-records.json#/table_definition"
+    },
+    "source_query": {
+        "records": {
+            "job_record_id": "jr.job_record_id",
+            "job_record_origin_id": "jr.job_record_origin_id",
+            "resource_id": "jr.resource_id",
+            "resourcetype_id": "jr.resourcetype_id",
+            "resource_state_id": "jr.resource_state_id",
+            "resource_country_id": "jr.resource_country_id",
+            "resource_organization_id": "jr.resource_organization_id",
+            "resource_organization_type_id": "jr.resource_organization_type_id",
+            "allocation_resource_id": "jr.allocation_resource_id",
+            "person_id": "jr.person_id",
+            "person_organization_id": "jr.person_organization_id",
+            "person_nsfstatuscode_id": "jr.person_nsfstatuscode_id",
+            "account_id": "jr.account_id",
+            "allocation_id": "jr.allocation_id",
+            "request_id": "jr.request_id",
+            "fos_id": "jr.fos_id",
+            "principalinvestigator_person_id": "jr.principalinvestigator_person_id",
+            "piperson_organization_id": "jr.piperson_organization_id",
+            "job_record_type_id": "jr.job_record_type_id",
+            "submission_venue_id": "jr.submission_venue_id",
+            "queue": "jr.queue",
+            "submit_time_ts": "jr.submit_time_ts",
+            "start_time_ts": "jr.start_time_ts",
+            "end_time_ts": "jr.end_time_ts",
+            "start_day_id": "jr.start_day_id",
+            "end_day_id": "jr.end_day_id",
+            "local_charge_su": "jr.local_charge_su",
+            "adjusted_charge_su": "jr.adjusted_charge_su",
+            "local_charge_xdsu": "jr.local_charge_xdsu",
+            "adjusted_charge_xdsu": "jr.adjusted_charge_xdsu",
+            "local_charge_nu": "jr.local_charge_nu",
+            "adjusted_charge_nu": "jr.adjusted_charge_nu",
+            "conversion_factor": "jr.conversion_factor",
+            "completed": "jr.completed",
+            "federation_instance_id": "jr.federation_instance_id",
+            "last_modified": "jr.last_modified",
+            "is_deleted": "jr.is_deleted"
+        },
+        "joins": [
+            {
+                "name": "job_records_staging",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "jr"
+            }
+        ]
+    }
+}
