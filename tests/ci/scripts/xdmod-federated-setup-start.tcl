@@ -22,7 +22,6 @@ set federated-instances [list]
 lappend federatedinstances [list test1.example.com xdmod1@example.com]
 lappend federatedinstances [list test2.example.com xdmod2@example.com]
 lappend federatedinstances [list test3.example.com xdmod3@example.com]
-lappend federatedinstances [list test4.example.com xdmod4@example.com]
 # -------------
 
 #-------------------------------------------------------------------------------

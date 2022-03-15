@@ -25,7 +25,7 @@ then
 
     for instance in $federation_instances; do
         modw_table=${instance}-modw
-        instance_id=`mysql -s -N -e "SELECT federation_instance_id FROM modw_federation_instances WHERE prefix = $instance"`
+        instance_id=`mysql -s -N -e "SELECT federation_instance_id FROM modw.federation_instances WHERE prefix = '$instance'"`
 
         mysql $modw_table < $REF_DIR/dimensions/${instance}.sql
         mysql $modw_table < $REF_DIR/facts/${instance}.sql

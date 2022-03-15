@@ -17,7 +17,7 @@ RUN /tmp/assets/copy-caches.sh
 COPY bin /root/bin
 
 #COPY /home/gmdean/xdmod /root/xdmod
-RUN git clone --single-branch --depth=1 https://github.com/eiffel777/xdmod/ --branch $BRANCH /root/xdmod
+RUN git clone https://github.com/eiffel777/xdmod/ --branch $BRANCH /root/xdmod
 RUN git clone --single-branch --depth=1 https://github.com/eiffel777/xdmod-federated/ --branch $FED_BRANCH /root/xdmod/open_xdmod/modules/federated
 
 WORKDIR /root/xdmod
