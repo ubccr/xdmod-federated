@@ -35,7 +35,7 @@ lappend federatedinstances [list test4.example.com xdmod4@example.com]
 set timeout 60
 spawn "xdmod-setup"
 
-profivdeInput {Do you want to continue (yes, no)?} yes
+provideInput {Do you want to continue (yes, no)?} yes
 selectMenuOption 9
 selectMenuOption 1
 provideInput {Is this a federation `hub` or `instance`?} hub
