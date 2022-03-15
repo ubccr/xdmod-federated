@@ -1,6 +1,6 @@
 FROM tools-ext-01.ccr.xdmod.org/xdmod-base-9.0:centos7.8-0.1
 
-ENV FED_BRANCH=xdmod9.5
+ENV FED_BRANCH=xdmod9.5-update
 ENV BRANCH=xdmod9.5-update
 ENV REL=9.5.0
 ENV BUILD=1.0
@@ -18,7 +18,7 @@ COPY bin /root/bin
 
 #COPY /home/gmdean/xdmod /root/xdmod
 RUN git clone --single-branch --depth=1 https://github.com/eiffel777/xdmod/ --branch $BRANCH /root/xdmod
-RUN git clone --single-branch --depth=1 https://github.com/ubccr/xdmod-federated/ --branch $FED_BRANCH /root/xdmod/open_xdmod/modules/federated
+RUN git clone --single-branch --depth=1 https://github.com/eiffel777/xdmod-federated/ --branch $FED_BRANCH /root/xdmod/open_xdmod/modules/federated
 
 WORKDIR /root/xdmod
 RUN composer install
