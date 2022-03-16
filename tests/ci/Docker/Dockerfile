@@ -10,13 +10,13 @@ ENV XDMOD_TEST_MODE=fresh_install
 
 # We have some caches that we put in place for automated builds.
 # This will copy them into place if they exist
-COPY assets /tmp/assets
-COPY scripts /tmp/scripts
-COPY bootstrap-federation.sh /tmp/bootstrap/bootstrap-federation.sh
+COPY ci/assets /tmp/assets
+COPY ci/scripts /tmp/scripts
+COPY artifacts /var/tmp
+COPY ci/bootstrap-federation.sh /tmp/bootstrap/bootstrap-federation.sh
 RUN /tmp/assets/copy-caches.sh
-COPY bin /root/bin
+COPY ci/bin /root/bin
 
-#COPY /home/gmdean/xdmod /root/xdmod
 RUN git clone https://github.com/eiffel777/xdmod/ --branch $BRANCH /root/xdmod
 RUN git clone --single-branch --depth=1 https://github.com/eiffel777/xdmod-federated/ --branch $FED_BRANCH /root/xdmod/open_xdmod/modules/federated
 
@@ -28,7 +28,7 @@ RUN /root/bin/buildrpm xdmod
 RUN /root/bin/buildrpm federated
 
 # Install / Upgrade based on the XDMOD_TEST_MODE env variable.
-RUN /root/xdmod/tests/ci/bootstrap.sh
+#RUN /root/xdmod/tests/ci/bootstrap.sh
 
 RUN /tmp/bootstrap/bootstrap-federation.sh
 

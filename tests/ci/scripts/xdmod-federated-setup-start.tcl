@@ -16,12 +16,19 @@ proc answerQuestion1 { question response } {
 #-------------------------------------------------------------------------------
 # Configuration settings for the XDMoD resources
 
-set federated-instances [list]
+set federatedinstances [list]
 
-# Job Resources
+# Federation Instances
 lappend federatedinstances [list test1.example.com xdmod1@example.com]
 lappend federatedinstances [list test2.example.com xdmod2@example.com]
 lappend federatedinstances [list test3.example.com xdmod3@example.com]
+# -------------
+
+set federatedresources [list]
+# HPC Resources
+lappend federatedresources [list AMNH-mendel AMNH-mendel hpc 26 1344]
+lappend federatedresources [list TACC-frontera TACC-frontera hpc 8008 448448]
+lappend federatedresources [list CCR-ub-hpc CCR-ub-hpc hpc 779 11386]
 # -------------
 
 #-------------------------------------------------------------------------------
@@ -49,6 +56,24 @@ foreach instance $federatedinstances {
 }
 
 selectMenuOption r
+
+# Enter config settings for each resource
+selectMenuOption 4
+foreach resource $federatedresources {
+	selectMenuOption 1
+	provideInput {Resource Name:} [lindex $resource 0]
+	provideInput {Formal Name:} [lindex $resource 1]
+	provideInput {Resource Type*} [lindex $resource 2]
+	provideInput {How many nodes does this resource have?} [lindex $resource 3]
+	provideInput {How many total processors (cpu cores) does this resource have?} [lindex $resource 4]
+}
+
+selectMenuOption s
+confirmFileWrite yes
+enterToContinue
+confirmFileWrite yes
+enterToContinue
+
 selectMenuOption q
 
 lassign [wait] pid spawnid os_error_flag value
