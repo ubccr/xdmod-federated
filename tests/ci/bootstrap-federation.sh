@@ -66,12 +66,14 @@ then
         modw_cloud_db=${instance}-modw_cloud
         instance_id=`mysql -s -N -e "SELECT federation_instance_id FROM modw.federation_instances WHERE prefix = '$instance'"`
 
+        if [ ! -f "$REF_DIR/artifacts/federation-instance-data/cloud/dimensions/${instance}.sql" ]; then
+            tar -xzvf $REF_DIR/artifacts/federation-instance-data/cloud/dimensions/${instance}.sql.tar.gz --directory $REF_DIR/artifacts/federation-instance-data/cloud/dimensions
+        fi
+
         mysql $modw_cloud_db < $REF_DIR/artifacts/federation-instance-data/cloud/dimensions/${instance}.sql
         mysql $modw_cloud_db < $REF_DIR/artifacts/federation-instance-data/cloud/events/${instance}.sql
 
-        echo $REF_DIR/artifacts/federation-instance-data/cloud/resources/${instance}.sql
         if [ -f "$REF_DIR/artifacts/federation-instance-data/cloud/resources/${instance}.sql" ]; then
-            echo "importing resource"
             mysql ${instance}-modw < $REF_DIR/artifacts/federation-instance-data/cloud/resources/${instance}.sql
         fi
 
