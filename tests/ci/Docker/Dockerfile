@@ -27,8 +27,6 @@ RUN /root/bin/buildrpm xdmod
 RUN /root/bin/buildrpm federated
 
 # Install / Upgrade based on the XDMOD_TEST_MODE env variable.
-#RUN /root/xdmod/tests/ci/bootstrap.sh
-
 RUN /var/tmp/ci/bootstrap-federation.sh
 
 # Clean everything up
