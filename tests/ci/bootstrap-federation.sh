@@ -5,14 +5,15 @@
 # set of commands that are run would work on a real production system.
 
 BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-REF_DIR=/var/tmp/federation-instance-data
-
+REF_DIR=/var/tmp
+XDMOD_DIR=/root/xdmod
 
 if [ -z $XDMOD_REALMS ]; then
     export XDMOD_REALMS=jobs,storage,cloud
 fi
 
-federation_instances=("test1_example_com" "test2_example_com" "test3_example_com")
+federation_instances_jobs=("test1_example_com" "test2_example_com" "test3_example_com")
+federation_instances_cloud=("test3_example_com" "test4_example_com")
 CURRENTDATE=$(date +'%F')
 
 function copy_template_httpd_conf {
@@ -36,25 +37,54 @@ then
     GRANT ALL PRIVILEGES ON *.* TO 'root'@'gateway' WITH GRANT OPTION;
     FLUSH PRIVILEGES;"
 
-    expect /root/xdmod/tests/ci/scripts/xdmod-setup-start.tcl | col -b
-    expect /tmp/scripts/xdmod-federated-setup-start.tcl | col -b
-    expect /root/xdmod/tests/ci/scripts/xdmod-setup-finish.tcl | col -b
+    expect $XDMOD_DIR/tests/ci/scripts/xdmod-setup-start.tcl | col -b
+    expect $REF_DIR/ci/scripts/xdmod-federated-setup-start.tcl | col -b
+    expect $XDMOD_DIR/tests/ci/scripts/xdmod-setup-finish.tcl | col -b
 
-    for instance in "${federation_instances[@]}"; do
-        modw_table=${instance}-modw
+    for instance in "${federation_instances_jobs[@]}"; do
+        modw_db=${instance}-modw
         instance_id=`mysql -s -N -e "SELECT federation_instance_id FROM modw.federation_instances WHERE prefix = '$instance'"`
 
-        mysql $modw_table < $REF_DIR/dimensions/${instance}.sql
-        mysql $modw_table < $REF_DIR/facts/${instance}.sql
+        if [ ! -f "$REF_DIR/artifacts/federation-instance-data/jobs/dimensions/${instance}.sql" ]; then
+            tar -xzvf $REF_DIR/artifacts/federation-instance-data/jobs/dimensions/${instance}.sql.tar.gz --directory $REF_DIR/artifacts/federation-instance-data/jobs/dimensions
+        fi
 
-        /usr/share/xdmod/tools/etl/etl_overseer.php -p fed.ingest -d instance_name="$instance" -d instance_id=$instance_id --last-modified-start-date "$CURRENTDATE 00:00:00" -v debug
+        if [ ! -f "$REF_DIR/artifacts/federation-instance-data/jobs/facts/${instance}.sql" ]; then
+            tar -xzvf $REF_DIR/artifacts/federation-instance-data/jobs/facts/${instance}.sql.tar.gz --directory $REF_DIR/artifacts/federation-instance-data/jobs/facts
+        fi
 
-        mysql -e "truncate table \`$modw_table\`.\`job_tasks_staging\`"
-        mysql -e "truncate table \`$modw_table\`.\`job_records_staging\`"
+        mysql $modw_db < $REF_DIR/artifacts/federation-instance-data/jobs/dimensions/${instance}.sql
+        mysql $modw_db < $REF_DIR/artifacts/federation-instance-data/jobs/facts/${instance}.sql
+
+        /usr/share/xdmod/tools/etl/etl_overseer.php -p fed.ingest -d instance_name="$instance" -d instance_id=$instance_id --last-modified-start-date "2021-01-01 00:00:00" -v debug
+
+        mysql -e "truncate table \`$modw_db\`.\`job_tasks_staging\`"
+        mysql -e "truncate table \`$modw_db\`.\`job_records_staging\`"
+    done
+
+    for instance in "${federation_instances_cloud[@]}"; do
+        modw_cloud_db=${instance}-modw_cloud
+        instance_id=`mysql -s -N -e "SELECT federation_instance_id FROM modw.federation_instances WHERE prefix = '$instance'"`
+
+        mysql $modw_cloud_db < $REF_DIR/artifacts/federation-instance-data/cloud/dimensions/${instance}.sql
+        mysql $modw_cloud_db < $REF_DIR/artifacts/federation-instance-data/cloud/events/${instance}.sql
+
+        echo $REF_DIR/artifacts/federation-instance-data/cloud/resources/${instance}.sql
+        if [ -f "$REF_DIR/artifacts/federation-instance-data/cloud/resources/${instance}.sql" ]; then
+            echo "importing resource"
+            mysql ${instance}-modw < $REF_DIR/artifacts/federation-instance-data/cloud/resources/${instance}.sql
+        fi
+
+        /usr/share/xdmod/tools/etl/etl_overseer.php -p xdmod.jobs-cloud-common
+        /usr/share/xdmod/tools/etl/etl_overseer.php -p fed.ingest-cloud -d instance_name="$instance" -d instance_id=$instance_id --last-modified-start-date "2021-01-01 00:00:00" -v debug
     done
 
     /usr/share/xdmod/tools/etl/etl_overseer.php -p ingest-resource-types
     xdmod-ingestor --aggregate=job --last-modified-start-date "$CURRENTDATE 00:00:00"
+    xdmod-ingestor --aggregate=cloud --last-modified-start-date "$CURRENTDATE 00:00:00"
+
+    #php /root/xdmod/tests/ci/scripts/create_xdmod_users.php
+    /usr/bin/acl-config
 
 fi
 

@@ -22,6 +22,7 @@ set federatedinstances [list]
 lappend federatedinstances [list test1.example.com xdmod1@example.com]
 lappend federatedinstances [list test2.example.com xdmod2@example.com]
 lappend federatedinstances [list test3.example.com xdmod3@example.com]
+lappend federatedinstances [list test4.example.com xdmod4@example.com]
 # -------------
 
 set federatedresources [list]
@@ -29,6 +30,8 @@ set federatedresources [list]
 lappend federatedresources [list AMNH-mendel AMNH-mendel hpc 26 1344]
 lappend federatedresources [list TACC-frontera TACC-frontera hpc 8008 448448]
 lappend federatedresources [list CCR-ub-hpc CCR-ub-hpc hpc 779 11386]
+lappend federatedresources [list CCR-lakeeffect UB-lakeeffect cloud 1 1]
+lappend federatedresources [list Cornell-redcloud Cornell-redcloud cloud 1 1]
 # -------------
 
 #-------------------------------------------------------------------------------
