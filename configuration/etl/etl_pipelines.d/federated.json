@@ -2,27 +2,9 @@
     "description": "Federation Jobs Ingest",
     "ingest": [
         {
-            "name": "instance-ogranization",
-            "definition_file": "federated/jobs/organization.json",
-            "description": "Organization *requires: -d instance_name*",
-            "truncate_destination": false
-        },
-        {
-            "name": "instance-resource",
-            "definition_file": "federated/jobs/resource-fact.json",
-            "description": "Resource *requires: -d instance_name*",
-            "truncate_destination": false
-        },
-        {
             "name": "instance-queue",
             "definition_file": "federated/jobs/queue.json",
             "description": "Queue *requires: -d instance_name*",
-            "truncate_destination": false
-        },
-        {
-            "name": "instance-resource-spec",
-            "definition_file": "federated/jobs/resource-specs.json",
-            "description": "Resource Spec *requires: -d instance_name*",
             "truncate_destination": false
         },
         {

@@ -80,6 +80,12 @@
             "options_class": "IngestorOptions",
             "enabled": true
         },
+        "ingest-resources": {
+            "class": "DatabaseIngestor",
+            "namespace": "ETL\\Ingestor",
+            "options_class": "IngestorOptions",
+            "enabled": true
+        },
         "ingest-cloud": {
             "endpoints": {
                 "destination": {
@@ -117,5 +123,8 @@
     },
     "ingest-cloud": {
         "$ref": "etl_pipelines.d/federated-cloud.json#/ingest"
+    },
+    "ingest-resources": {
+        "$ref": "etl_pipelines.d/federated-resources.json#/ingest"
     }
 }

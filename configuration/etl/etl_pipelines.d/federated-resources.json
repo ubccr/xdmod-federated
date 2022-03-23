@@ -1,0 +1,23 @@
+{
+    "description": "Federation Resources Ingest",
+    "ingest": [
+        {
+            "name": "instance-ogranization",
+            "definition_file": "federated/resources/organization.json",
+            "description": "Organization *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
+            "name": "instance-resource",
+            "definition_file": "federated/resources/resource-fact.json",
+            "description": "Resource *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
+            "name": "instance-resource-spec",
+            "definition_file": "federated/resources/resource-specs.json",
+            "description": "Resource Spec *requires: -d instance_name*",
+            "truncate_destination": false
+        }
+    ]
+}

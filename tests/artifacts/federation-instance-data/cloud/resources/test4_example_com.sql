@@ -52,6 +52,52 @@ LOCK TABLES `resourcefact` WRITE;
 INSERT INTO `resourcefact` VALUES (1,5,1,'RedCloud','redcloud',NULL,'0000-00-00 00:00:00',0,NULL,NULL,0,'UTC',1);
 /*!40000 ALTER TABLE `resourcefact` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `organization`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE IF NOT EXISTS `organization` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The id of the record.',
+  `organizationtype_id` int(11) DEFAULT NULL COMMENT 'The type of the organization.',
+  `abbrev` varchar(100) DEFAULT NULL COMMENT 'Abbreviated name.',
+  `name` varchar(300) DEFAULT NULL COMMENT 'Long name for this organization.',
+  `url` varchar(500) DEFAULT NULL COMMENT 'The internet URL.',
+  `phone` varchar(30) DEFAULT NULL COMMENT 'Phone number.',
+  `nsf_org_code` varchar(45) DEFAULT NULL COMMENT 'NSF code for this organization.',
+  `is_reconciled` tinyint(1) DEFAULT '0' COMMENT 'Whether this record is reconciled.',
+  `amie_name` varchar(6) DEFAULT NULL COMMENT 'The amie name.',
+  `country_id` int(11) DEFAULT NULL COMMENT 'The country this organization is in.',
+  `state_id` int(11) DEFAULT NULL COMMENT 'The state this organization is in.',
+  `latitude` decimal(13,10) DEFAULT NULL COMMENT 'The latitude of the organization.',
+  `longitude` decimal(13,10) DEFAULT NULL COMMENT 'The longitude of the organization.',
+  `short_name` varchar(300) DEFAULT NULL,
+  `long_name` varchar(300) DEFAULT NULL,
+  `federation_instance_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `organization_origin_id` int(11) DEFAULT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `amie_name_unique` (`amie_name`) USING BTREE,
+  UNIQUE KEY `name_unique` (`name`) USING BTREE,
+  UNIQUE KEY `nsf_org_code_unique` (`nsf_org_code`) USING BTREE,
+  UNIQUE KEY `uniq` (`organization_origin_id`,`federation_instance_id`) USING BTREE,
+  KEY `fk_organization_country1_idx` (`country_id`) USING BTREE,
+  KEY `fk_organization_organizationtype1_idx` (`organizationtype_id`) USING BTREE,
+  KEY `fk_organization_state1_idx` (`state_id`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='The various organization.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orgainzation`
+--
+
+LOCK TABLES `organization` WRITE;
+/*!40000 ALTER TABLE `organization` DISABLE KEYS */;
+INSERT INTO `organization` VALUES (1, 1,'Cornell', 'Cornell University Center for Advanced Computing', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 'Cornell', 'Cornell University Center for Advanced Computing', 0, 1, 0);
+/*!40000 ALTER TABLE `organization` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

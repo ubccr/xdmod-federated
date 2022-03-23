@@ -44,7 +44,6 @@ lappend federatedresources [list Cornell-redcloud Cornell-redcloud cloud 1 1]
 set timeout 60
 spawn "xdmod-setup"
 
-provideInput {Do you want to continue (yes, no)?} yes
 selectMenuOption 9
 selectMenuOption 1
 provideInput {Is this a federation `hub` or `instance`?} hub
