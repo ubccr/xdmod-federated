@@ -5,6 +5,7 @@
 # set of commands that are run would work on a real production system.
 
 BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+REF_SOURCE=`realpath $BASEDIR/../artifacts`
 REF_DIR=/var/tmp
 XDMOD_DIR=/root/xdmod
 
@@ -19,6 +20,8 @@ CURRENTDATE=$(date +'%F')
 function copy_template_httpd_conf {
     cp /usr/share/xdmod/templates/apache.conf /etc/httpd/conf.d/xdmod.conf
 }
+
+cp -r $REF_SOURCE /var/tmp/
 
 set -e
 set -o pipefail
@@ -38,7 +41,7 @@ then
     FLUSH PRIVILEGES;"
 
     expect $XDMOD_DIR/tests/ci/scripts/xdmod-setup-start.tcl | col -b
-    expect $REF_DIR/ci/scripts/xdmod-federated-setup-start.tcl | col -b
+    expect $XDMOD_DIR/open_xdmod/modules/federated/tests/ci/scripts/xdmod-federated-setup-start.tcl | col -b
     expect $XDMOD_DIR/tests/ci/scripts/xdmod-setup-finish.tcl | col -b
 
     for instance in "${federation_instances_jobs[@]}"; do
@@ -56,6 +59,7 @@ then
         mysql $modw_db < $REF_DIR/artifacts/federation-instance-data/jobs/dimensions/${instance}.sql
         mysql $modw_db < $REF_DIR/artifacts/federation-instance-data/jobs/facts/${instance}.sql
 
+        /usr/share/xdmod/tools/etl/etl_overseer.php -p fed.ingest-resources -d instance_name="$instance" -d instance_id=$instance_id
         /usr/share/xdmod/tools/etl/etl_overseer.php -p fed.ingest -d instance_name="$instance" -d instance_id=$instance_id --last-modified-start-date "2021-01-01 00:00:00" -v debug
 
         mysql -e "truncate table \`$modw_db\`.\`job_tasks_staging\`"
@@ -77,6 +81,7 @@ then
             mysql ${instance}-modw < $REF_DIR/artifacts/federation-instance-data/cloud/resources/${instance}.sql
         fi
 
+        /usr/share/xdmod/tools/etl/etl_overseer.php -p fed.ingest-resources -d instance_name="$instance" -d instance_id=$instance_id
         /usr/share/xdmod/tools/etl/etl_overseer.php -p xdmod.jobs-cloud-common
         /usr/share/xdmod/tools/etl/etl_overseer.php -p fed.ingest-cloud -d instance_name="$instance" -d instance_id=$instance_id --last-modified-start-date "2021-01-01 00:00:00" -v debug
     done
