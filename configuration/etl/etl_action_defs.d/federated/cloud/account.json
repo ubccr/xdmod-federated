@@ -8,13 +8,21 @@
             "resource_id": "drf.id",
             "account_id": "scaf.account_id",
             "provider_account": "scaf.provider_account",
-            "display": "CONCAT(scaf.display, ' (', dof.abbrev, ')')"
+            "display": "CONCAT(scaf.display, ' (', dof.abbrev, ')')",
+            "principalinvestigator_person_id": "COALESCE(p.id, -1)"
         },
         "joins": [
             {
                 "name": "account",
                 "schema": "${SOURCE_SCHEMA}",
                 "alias": "scaf"
+            },
+            {
+                "name": "person",
+                "type": "LEFT",
+                "schema": "${UTILITY_SCHEMA}",
+                "alias": "p",
+                "on": "p.organization_id = (SELECT id FROM modw.organization WHERE federation_instance_id = ${instance_id}) and p.person_origin_id = scaf.principalinvestigator_person_id"
             },
             {
                 "name": "resourcefact",
