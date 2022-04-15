@@ -20,18 +20,6 @@
             "truncate_destination": false
         },
         {
-            "name": "instance-person",
-            "definition_file": "federated/jobs/person.json",
-            "description": "Person *requires: -d instance_name*",
-            "truncate_destination": false
-        },
-        {
-            "name": "instance-piperson",
-            "definition_file": "federated/jobs/piperson.json",
-            "description": "PI Person *requires: -d instance_name*",
-            "truncate_destination": false
-        },
-        {
             "name": "instance-account",
             "definition_file": "federated/jobs/account.json",
             "description": "Account *requires: -d instance_name*",
@@ -62,12 +50,6 @@
             "truncate_destination": false
         },
         {
-            "name": "instance-system-account",
-            "definition_file": "federated/jobs/system-account.json",
-            "description": "System Account *requires: -d instance_name*",
-            "truncate_destination": false
-        },
-        {
             "name": "instance-job-record",
             "definition_file": "federated/jobs/job-records.json",
             "description": "Job records *requires: -d instance_name*",
@@ -86,12 +68,6 @@
             "definition_file": "federated/jobs/jobhosts.json",
             "description": "Job Hosts *requires: -d instance_name*",
             "analyze_table": false,
-            "truncate_destination": false
-        },
-        {
-            "name": "instance-pi",
-            "definition_file": "federated/jobs/principal-investigator.json",
-            "description": "pi *requires: -d instance_name*",
             "truncate_destination": false
         },
         {

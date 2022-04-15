@@ -1,0 +1,29 @@
+{
+    "description": "Federation Resources Ingest",
+    "ingest": [
+        {
+            "name": "instance-person",
+            "definition_file": "federated/people/person.json",
+            "description": "Person *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
+            "name": "instance-piperson",
+            "definition_file": "federated/people/piperson.json",
+            "description": "PI Person *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
+            "name": "instance-system-account",
+            "definition_file": "federated/people/system-account.json",
+            "description": "System Account *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
+            "name": "instance-pi",
+            "definition_file": "federated/people/principal-investigator.json",
+            "description": "pi *requires: -d instance_name*",
+            "truncate_destination": false
+        }
+    ]
+}

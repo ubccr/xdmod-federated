@@ -86,6 +86,12 @@
             "options_class": "IngestorOptions",
             "enabled": true
         },
+        "ingest-people": {
+            "class": "DatabaseIngestor",
+            "namespace": "ETL\\Ingestor",
+            "options_class": "IngestorOptions",
+            "enabled": true
+        },
         "ingest-cloud": {
             "endpoints": {
                 "destination": {
@@ -126,5 +132,8 @@
     },
     "ingest-resources": {
         "$ref": "etl_pipelines.d/federated-resources.json#/ingest"
+    },
+    "ingest-people": {
+        "$ref": "etl_pipelines.d/federated-people.json#/ingest"
     }
 }

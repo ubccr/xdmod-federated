@@ -61,6 +61,7 @@ then
         mysql $modw_db < $REF_DIR/artifacts/federation-instance-data/jobs/facts/${instance}.sql
 
         /usr/share/xdmod/tools/etl/etl_overseer.php -p fed.ingest-resources -d instance_name="$instance" -d instance_id=$instance_id
+        /usr/share/xdmod/tools/etl/etl_overseer.php -p fed.ingest-people -d instance_name="$instance" -d instance_id=$instance_id
         /usr/share/xdmod/tools/etl/etl_overseer.php -p fed.ingest -d instance_name="$instance" -d instance_id=$instance_id --last-modified-start-date "2021-01-01 00:00:00" -v debug
 
         mysql -e "truncate table \`$modw_db\`.\`job_tasks_staging\`"
@@ -83,13 +84,14 @@ then
         fi
 
         /usr/share/xdmod/tools/etl/etl_overseer.php -p fed.ingest-resources -d instance_name="$instance" -d instance_id=$instance_id
+        /usr/share/xdmod/tools/etl/etl_overseer.php -p fed.ingest-people -d instance_name="$instance" -d instance_id=$instance_id
         /usr/share/xdmod/tools/etl/etl_overseer.php -p xdmod.jobs-cloud-common
         /usr/share/xdmod/tools/etl/etl_overseer.php -p fed.ingest-cloud -d instance_name="$instance" -d instance_id=$instance_id --last-modified-start-date "2021-01-01 00:00:00" -v debug
     done
 
     /usr/share/xdmod/tools/etl/etl_overseer.php -p ingest-resource-types
-    xdmod-ingestor --aggregate=job --last-modified-start-date "$CURRENTDATE 00:00:00"
-    xdmod-ingestor --aggregate=cloud --last-modified-start-date "$CURRENTDATE 00:00:00"
+    xdmod-ingestor --aggregate=job --last-modified-start-date "2021-01-01 00:00:00"
+    xdmod-ingestor --aggregate=cloud --last-modified-start-date "2021-01-01 00:00:00"
 
     php /root/xdmod/tests/ci/scripts/create_xdmod_users.php
     /usr/bin/acl-config
