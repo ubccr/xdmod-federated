@@ -95,6 +95,12 @@
             "truncate_destination": false
         },
         {
+            "name": "instance-node-count",
+            "definition_file": "federated/jobs/node-count.json",
+            "description": "Number of nodes requested for job *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
             "name": "instance-job-task-spoke",
             "definition_file": "federated/jobs/job-tasks-spoke.json",
             "description": "Job tasks *requires: -d instance_name*",
