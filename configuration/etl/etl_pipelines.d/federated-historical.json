@@ -50,6 +50,12 @@
             "truncate_destination": false
         },
         {
+            "name": "instance-node-count",
+            "definition_file": "federated/jobs/node-count.json",
+            "description": "Number of nodes requested for job *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
             "name": "instance-job-record",
             "definition_file": "federated/jobs/job-records-historical.json",
             "description": "Job records *requires: -d instance_name*",

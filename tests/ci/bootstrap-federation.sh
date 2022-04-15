@@ -21,6 +21,7 @@ function copy_template_httpd_conf {
     cp /usr/share/xdmod/templates/apache.conf /etc/httpd/conf.d/xdmod.conf
 }
 
+rm -rf /var/tmp/artifacts
 cp -r $REF_SOURCE /var/tmp/
 
 set -e
@@ -49,11 +50,11 @@ then
         instance_id=`mysql -s -N -e "SELECT federation_instance_id FROM modw.federation_instances WHERE prefix = '$instance'"`
 
         if [ ! -f "$REF_DIR/artifacts/federation-instance-data/jobs/dimensions/${instance}.sql" ]; then
-            tar -xzvf $REF_DIR/artifacts/federation-instance-data/jobs/dimensions/${instance}.sql.tar.gz --directory $REF_DIR/artifacts/federation-instance-data/jobs/dimensions
+            gunzip $REF_DIR/artifacts/federation-instance-data/jobs/dimensions/${instance}.sql.gz
         fi
 
         if [ ! -f "$REF_DIR/artifacts/federation-instance-data/jobs/facts/${instance}.sql" ]; then
-            tar -xzvf $REF_DIR/artifacts/federation-instance-data/jobs/facts/${instance}.sql.tar.gz --directory $REF_DIR/artifacts/federation-instance-data/jobs/facts
+            gunzip $REF_DIR/artifacts/federation-instance-data/jobs/facts/${instance}.sql.gz
         fi
 
         mysql $modw_db < $REF_DIR/artifacts/federation-instance-data/jobs/dimensions/${instance}.sql
@@ -72,14 +73,14 @@ then
         instance_id=`mysql -s -N -e "SELECT federation_instance_id FROM modw.federation_instances WHERE prefix = '$instance'"`
 
         if [ ! -f "$REF_DIR/artifacts/federation-instance-data/cloud/dimensions/${instance}.sql" ]; then
-            tar -xzvf $REF_DIR/artifacts/federation-instance-data/cloud/dimensions/${instance}.sql.tar.gz --directory $REF_DIR/artifacts/federation-instance-data/cloud/dimensions
+            gunzip $REF_DIR/artifacts/federation-instance-data/cloud/dimensions/modw-cloud/${instance}.sql.gz
         fi
 
-        mysql $modw_cloud_db < $REF_DIR/artifacts/federation-instance-data/cloud/dimensions/${instance}.sql
-        mysql $modw_cloud_db < $REF_DIR/artifacts/federation-instance-data/cloud/events/${instance}.sql
+        mysql $modw_cloud_db < $REF_DIR/artifacts/federation-instance-data/cloud/dimensions/modw-cloud/${instance}.sql
+        mysql $modw_cloud_db < $REF_DIR/artifacts/federation-instance-data/cloud/facts/${instance}.sql
 
-        if [ -f "$REF_DIR/artifacts/federation-instance-data/cloud/resources/${instance}.sql" ]; then
-            mysql ${instance}-modw < $REF_DIR/artifacts/federation-instance-data/cloud/resources/${instance}.sql
+        if [ -f "$REF_DIR/artifacts/federation-instance-data/cloud/dimensions/modw/${instance}.sql" ]; then
+            mysql ${instance}-modw < $REF_DIR/artifacts/federation-instance-data/cloud/dimensions/modw/${instance}.sql
         fi
 
         /usr/share/xdmod/tools/etl/etl_overseer.php -p fed.ingest-resources -d instance_name="$instance" -d instance_id=$instance_id
@@ -92,7 +93,7 @@ then
     xdmod-ingestor --aggregate=job --last-modified-start-date "2021-01-01 00:00:00"
     xdmod-ingestor --aggregate=cloud --last-modified-start-date "2021-01-01 00:00:00"
 
-    #php /root/xdmod/tests/ci/scripts/create_xdmod_users.php
+    php /root/xdmod/tests/ci/scripts/create_xdmod_users.php
     /usr/bin/acl-config
 
 fi

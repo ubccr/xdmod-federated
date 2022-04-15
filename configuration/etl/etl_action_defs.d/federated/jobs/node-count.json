@@ -1,0 +1,21 @@
+{
+    "table_definition": {
+        "$ref": "${table_definition_dir}/jobs/xdw/node-count.json#/table_definition"
+    },
+    "source_query": {
+        "records": {
+            "id": "DISTINCT node_count",
+            "nodes": "node_count"
+        },
+        "joins": [
+            {
+                "name": "job_tasks_staging",
+                "schema": "${SOURCE_SCHEMA}"
+            }
+        ],
+        "where": [
+            "node_count <> 0",
+            "node_count IS NOT NULL"
+        ]
+    }
+}
