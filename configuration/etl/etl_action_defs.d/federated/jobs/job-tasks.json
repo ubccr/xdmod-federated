@@ -16,7 +16,7 @@
             "node_count": "jt.node_count",
             "processor_count": "jt.processor_count",
             "gpu_count": "jt.gpu_count",
-            "systemaccount_id": "jt.systemaccount_id",
+            "systemaccount_id": "sa.id",
             "person_id": "pf.id",
             "person_organization_id": "pf.organization_id",
             "person_nsfstatuscode_id": "pf.nsfstatuscode_id",
@@ -71,6 +71,12 @@
                 "name": "person",
                 "alias": "pf",
                 "on": "pf.person_origin_id = jt.person_id AND pf.organization_id = (SELECT id FROM ${DESTINATION_SCHEMA}.organization WHERE jt.person_organization_id = organization_origin_id AND federation_instance_id = ${instance_id})"
+            },
+            {
+                "schema": "${DESTINATION_SCHEMA}",
+                "name": "systemaccount",
+                "alias": "sa",
+                "on": "sa.system_account_origin_id = jt.systemaccount_id and sa.resource_id = rf.id"
             }
         ],
         "macros": [
