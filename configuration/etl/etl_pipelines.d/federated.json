@@ -97,7 +97,7 @@
         {
             "name": "instance-node-count",
             "definition_file": "federated/jobs/node-count.json",
-            "description": "Job tasks *requires: -d instance_name*",
+            "description": "Number of nodes requested for job *requires: -d instance_name*",
             "truncate_destination": false
         },
         {
