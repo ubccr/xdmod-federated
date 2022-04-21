@@ -1,0 +1,36 @@
+{
+    "table_definition": {
+        "$ref": "${table_definition_dir}/jobs/submission_venue.json#/table_definition"
+    },
+    "source_query": {
+        "records": {
+            "submission_venue": "sv.submission_venue",
+            "display": "CONCAT (sv.display, ' (', o.abbrev, ')')",
+            "description": "CONCAT (sv.description, ' (', o.abbrev, ')')",
+            "order_id": "sv.order_id",
+            "submission_venue_origin_id": "sv.submission_venue_id",
+            "organization_id": "o.id"
+        },
+        "joins": [
+            {
+                "name": "submission_venue",
+                "schema": "${SOURCE_SCHEMA}",
+                "alias": "sv"
+            },
+            {
+                "name": "organization",
+                "schema": "${DESTINATION_SCHEMA}",
+                "alias": "o",
+                "on": "o.federation_instance_id = ${instance_id}"
+            }
+        ],
+        "where": [
+            "TRIM(submission_venue) != 'unknown'"
+        ],
+        "macros": [
+            {
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
+            }
+        ]
+    }
+}

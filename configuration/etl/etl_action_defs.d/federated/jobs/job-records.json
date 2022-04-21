@@ -23,7 +23,7 @@
             "resource_organization_id": "jrof.id",
             "resource_organization_type_id": "COALESCE(jrof.organizationtype_id,0)",
             "job_record_type_id": "jr.job_record_type_id",
-            "submission_venue_id": "jr.submission_venue_id",
+            "submission_venue_id": "sv.submission_venue_id",
             "submit_time_ts": "jr.submit_time_ts",
             "start_time_ts": "jr.start_time_ts",
             "end_time_ts": "jr.end_time_ts",
@@ -73,6 +73,13 @@
                 "name": "allocation",
                 "alias": "alf",
                 "on": "alf.allocation_origin_id = jr.allocation_id AND alf.resource_id = rf.id"
+            },
+            {
+                "schema": "${DESTINATION_SCHEMA}",
+                "name": "submission_venue",
+                "alias": "sv",
+                "on": "sv.submission_venue_origin_id = jr.submission_venue_id AND sv.organization_id = jrof.id",
+                "type": "LEFT"
             }
         ],
         "macros": [

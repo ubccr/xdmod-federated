@@ -18,6 +18,12 @@
             "definition_file": "federated/resources/resource-specs.json",
             "description": "Resource Spec *requires: -d instance_name*",
             "truncate_destination": false
+        },
+        {
+            "name": "instance-submission-venue",
+            "definition_file": "federated/resources/submission-venue.json",
+            "description": "Resource Spec *requires: -d instance_name*",
+            "truncate_destination": false
         }
     ]
 }
