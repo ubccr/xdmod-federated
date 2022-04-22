@@ -325,3 +325,34 @@ index 5be8d75b..d6b88191 100644
                  "name": "display",
                  "order_id": "display",
                  "short_name": "display"
+diff --git a/configuration/etl/etl_tables.d/jobs/submission_venue.json b/configuration/etl/etl_tables.d/jobs/submission_venue.json
+index a7ec773..dfd7172 100644
+--- a/configuration/etl/etl_tables.d/jobs/submission_venue.json
++++ b/configuration/etl/etl_tables.d/jobs/submission_venue.json
+@@ -7,7 +7,8 @@
+             {
+                 "name": "submission_venue_id",
+                 "type": "int(11)",
+-                "nullable": false
++                "nullable": false,
++                "extra": "auto_increment"
+             },
+             {
+                 "name": "submission_venue",
+@@ -30,6 +31,16 @@
+                 "name": "order_id",
+                 "type": "int(5) unsigned",
+                 "nullable": false
++            },
++            {
++                "name": "submission_venue_origin_id",
++                "type": "int(11) unsigned",
++                "nullable": true
++            },
++            {
++                "name": "organization_id",
++                "type": "int(5) unsigned",
++                "nullable": true
+             }
+        ],
+        "indexes": [
