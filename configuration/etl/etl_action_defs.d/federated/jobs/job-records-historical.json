@@ -28,6 +28,7 @@
             "resource_organization_type_id": "COALESCE(jrof.organizationtype_id,0)",
             "job_record_type_id": "jr.job_record_type_id",
             "submission_venue_id": "jr.submission_venue_id",
+            "qos_id": "COALESCE(qos.id, -1)",
             "submit_time_ts": "jr.submit_time_ts",
             "start_time_ts": "jr.start_time_ts",
             "end_time_ts": "jr.end_time_ts",
@@ -77,6 +78,13 @@
                 "name": "allocation",
                 "alias": "alf",
                 "on": "alf.allocation_origin_id = jr.allocation_id AND alf.resource_id = rf.id"
+            },
+            {
+                "schema": "${DESTINATION_SCHEMA}",
+                "name": "qos",
+                "alias": "qos",
+                "on": "qos.qos_origin_id = jr.qos_id AND qos.federation_instance_id = ${instance_id}",
+                "type": "LEFT"
             }
         ],
         "macros": [

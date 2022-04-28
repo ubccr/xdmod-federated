@@ -24,6 +24,7 @@
             "piperson_organization_id": "jr.piperson_organization_id",
             "job_record_type_id": "jr.job_record_type_id",
             "submission_venue_id": "jr.submission_venue_id",
+            "qos_id": "jr.qos_id",
             "queue": "jr.queue",
             "submit_time_ts": "jr.submit_time_ts",
             "start_time_ts": "jr.start_time_ts",
