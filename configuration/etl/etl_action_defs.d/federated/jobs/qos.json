@@ -1,0 +1,33 @@
+{
+    "table_definition": {
+        "$ref": "${table_definition_dir}/jobs/federated/qos.json#/table_definition"
+    },
+    "source_query": {
+        "records": {
+            "name": "CONCAT(qos.name, ' (', o.abbrev, ')')",
+            "qos_origin_id": "qos.id",
+            "federation_instance_id": "${instance_id}"
+        },
+        "joins": [
+            {
+                "schema": "${SOURCE_SCHEMA}",
+                "name": "qos",
+                "alias": "qos"
+            },
+            {
+                "schema": "${DESTINATION_SCHEMA}",
+                "name": "organization",
+                "alias": "o",
+                "on": "o.federation_instance_id = ${instance_id}"
+            }
+        ],
+        "where":[
+          "qos.name != 'Unknown'"
+        ],
+        "macros": [
+            {
+                "$ref": "etl_macros.d/federated/federated.json#/getInstanceId"
+            }
+        ]
+    }
+}

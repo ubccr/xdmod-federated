@@ -50,6 +50,12 @@
             "truncate_destination": false
         },
         {
+            "name": "instance-qos",
+            "definition_file": "federated/jobs/qos.json",
+            "description": "Allocation Breakdown *requires: -d instance_name*",
+            "truncate_destination": false
+        },
+        {
             "name": "instance-node-count",
             "definition_file": "federated/jobs/node-count.json",
             "description": "Number of nodes requested for job *requires: -d instance_name*",

@@ -1,0 +1,60 @@
+{
+    "table_definition": {
+        "name": "qos",
+        "comment": "Quality of service.",
+        "engine": "InnoDB",
+        "columns": [
+          {
+              "name": "id",
+              "type": "int(11)",
+              "nullable": false,
+              "extra": "auto_increment"
+          },
+          {
+              "name": "name",
+              "type": "varchar(255)",
+              "nullable": false,
+              "comment": "The quality of service name."
+          },
+          {
+              "name": "qos_origin_id",
+              "type": "int(11)",
+              "nullable": false,
+              "default": -1
+          },
+          {
+              "name": "federation_instance_id",
+              "type": "int(11) unsigned",
+              "nullable": false,
+              "default": 0
+          }
+      ],
+        "indexes": [
+            {
+                "name": "PRIMARY",
+                "columns": [
+                    "id"
+                ],
+                "type": "BTREE",
+                "is_unique": true
+            },
+            {
+                "name": "idx_name",
+                "columns": [
+                    "name"
+                ],
+                "type": "BTREE",
+                "is_unique": true
+            },
+            {
+                "name": "uniq",
+                "columns": [
+                    "qos_origin_id",
+                    "federation_instance_id"
+                ],
+                "type": "BTREE",
+                "is_unique": true
+            }
+        ]
+    }
+}
